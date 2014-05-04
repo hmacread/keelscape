@@ -1,0 +1,16 @@
+application: secret-bay-570
+version: 0-1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:
+- name: webapp2
+  version: latest
+
+handlers:
+- url: /.*
+  script: landingpage.application
+
+inbound_services:
+- mail
