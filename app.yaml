@@ -1,5 +1,5 @@
 application: secret-bay-570
-version: 0-1
+version: 0-2
 runtime: python27
 api_version: 1
 threadsafe: true
@@ -9,8 +9,12 @@ libraries:
   version: latest
 
 handlers:
+- url: /_ah/mail/.+
+  script: emailhandler.application
+  login: admin
 - url: /.*
   script: landingpage.application
+
 
 inbound_services:
 - mail
