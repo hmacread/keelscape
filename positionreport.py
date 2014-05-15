@@ -16,10 +16,10 @@ class PositionReport():
     
         """Takes parses the iterator over enumerated sequence of line strings"""
         logging.info("Parsing message body.")       
-        #Skip to first not whitespace line
+        #Skip to AIRMAIL header
         for num, line in line_iterator:
             line = line.strip()
-            if line:
+            if not line.find('AIRMAIL') == -1:
                 break
         else:
             raise PositionReportError(0,"<Empty body>")
