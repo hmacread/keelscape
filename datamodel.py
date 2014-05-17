@@ -39,10 +39,10 @@ class User(ndb.Model):
 class Vessel(ndb.Model):
     
     name = ndb.StringProperty()
-    callsign = ndb.StringProperty()
+    callsign = ndb.StringProperty()  #unique
     home_port = ndb.StringProperty()
     length_over_all = ndb.FloatProperty() #in meters
-    mmsi = ndb.StringProperty() 
+    mmsi = ndb.StringProperty()  #unique
     sat_phone_number = ndb.StringProperty()
 
 class Waypoint(ndb.Model):
