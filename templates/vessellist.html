@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Vessel List{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Current Vessels</h1>
+        <ul>
+            {% for vessel in vessels %}
+            <li><a href='/vessel/{{ vessel.key.id() }}'>{{ vessel.callsign }}<a></li>
+            {% endfor %}
+        </ul>
+{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}    

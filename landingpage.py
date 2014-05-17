@@ -2,27 +2,30 @@ import logging
 import webapp2
 import urllib
 import datetime
+import os
 
 from google.appengine.ext import ndb
+from jinja2 import Environment, FileSystemLoader
 
 import datamodel
 
-HEADER= """\
-<html>
-  <body>
-  | <a href='/waypoint'>Waypoints</a> | <a href='/vessel'>Vessels</a> |  <a href='/weather'>Weather</a> <br><br>
-"""
-FOOTER= """\n\
-  </body>
-</html>"""
+#Jinja Environment instanciation to be used.
+JINJA_ENV = Environment(
+     loader=FileSystemLoader(os.path.dirname(__file__) + '/templates'),
+     extensions=['jinja2.ext.autoescape'],
+     autoescape=True
+     )
+
+
 
 class LandingPage(webapp2.RequestHandler):
 
     def get(self):
-        self.response.write(HEADER)
-        self.response.write("Landing page under construction!<br><br>")
-        self.response.write(FOOTER)
-        logging.info("GET request for %s completed." % self)
+    
+        template = JINJA_ENV.get_template('index.html')
+        self.response.write(template.render())
+        
+        logging.debug("GET request for %s completed." % self)
         
 class Waypoint(webapp2.RequestHandler):
 
@@ -37,7 +40,7 @@ class Waypoint(webapp2.RequestHandler):
             self.response.write(str(waypoint.received_date) + '<br>') 
 
         self.response.write(FOOTER)
-        logging.info("GET request for %s completed." % self)
+        logging.debug("GET request for %s completed." % self)
         
         
 class Vessel(webapp2.RequestHandler):
@@ -52,7 +55,7 @@ class Vessel(webapp2.RequestHandler):
             self.response.write(vessel.callsign + '<br>') 
 
         self.response.write(FOOTER)
-        logging.info("GET request for %s completed." % self)
+        logging.debug("GET request for %s completed." % self)
         
 class Weather(webapp2.RequestHandler):
     
@@ -69,7 +72,7 @@ class Weather(webapp2.RequestHandler):
                                 ) 
 
         self.response.write(FOOTER)
-        logging.info("GET request for %s completed." % self)
+        logging.debug("GET request for %s completed." % self)
         
 application = webapp2.WSGIApplication([
     ('/', LandingPage),

@@ -5,18 +5,25 @@ api_version: 1
 threadsafe: true
 
 libraries:
+
 - name: webapp2
   version: latest
+  
 - name: jinja2
   version: latest
 
 handlers:
+
+- url: /stylesheets
+  static_dir: stylesheets
+  
 - url: /_ah/mail/.+
   script: emailhandler.application
   login: admin
-- url: /.*
-  script: landingpage.application
 
+- url: /.*
+  script: pagehandler.application
 
 inbound_services:
+
 - mail

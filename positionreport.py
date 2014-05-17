@@ -4,18 +4,20 @@
 
 import logging
 import datetime
-import datamodel
+
+from datamodel import *
 
 class PositionReport():
-    
-    waypoint = datamodel.Waypoint()
-    vessel = datamodel.Vessel()
-    weather = datamodel.Weather()
+
         
     def __init__(self, line_iterator):
     
         """Takes parses the iterator over enumerated sequence of line strings"""
-        logging.info("Parsing message body.")       
+
+        self.waypoint = Waypoint()
+        self.vessel = Vessel()
+        self.weather = Weather()
+
         #Skip to AIRMAIL header
         for num, line in line_iterator:
             line = line.strip()
@@ -28,6 +30,28 @@ class PositionReport():
             self.parse_yotrep(line_iterator)
         else:
             raise PositionReportError(num,line)
+    
+    def put_contents(self):        
+        
+        """Writes out required new DB objects and updates relationships
+        
+        TODO move to PositionReport and make ancestor?)"""
+        existing_vessel = Vessel.query(Vessel.callsign 
+                                                == self.vessel.callsign).get()
+                                                
+        if not existing_vessel:
+            #vessel is new
+            self.waypoint.vessel = self.vessel.put()   
+            logging.info("Create new vessel: %s" % ( self.vessel.callsign))
+    
+        else:
+            #Report is for an existing vessel
+            self.waypoint.vessel = existing_vessel.key
+            logging.info("Assign new report to vessel: %s" % ( self.vessel.callsign))
+        
+        #attach a weather report TODO (only if weather is actually reported)
+        self.weather.waypoint = self.waypoint.put()
+        self.weather.put()
 
     def parse_yotrep(self, lines_iterator):
 
@@ -62,11 +86,11 @@ class PositionReport():
         elif type == 'TIME':
             self.waypoint.report_date = self.parse_yotreps_date(data)        
         elif type == 'LATITUDE': 
-            self.waypoint.position = datamodel.GeoPt(
+            self.waypoint.position = GeoPt(
                                                 self.parse_yotreps_lat(data),
                                                 0)
         elif type == 'LONGITUDE':
-            self.waypoint.position = datamodel.GeoPt(
+            self.waypoint.position = GeoPt(
                                                 self.waypoint.position.lat,
                                                 self.parse_yotreps_lon(data))
         elif type == 'COURSE':
