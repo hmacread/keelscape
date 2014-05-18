@@ -2,3 +2,28 @@ body {
   font-family: Candara, Helvetica, sans-serif;
   background-color: #FFFFFF;
 }
+
+#splash {
+  text-align: center;
+  background: url(../image/bg.jpg) 50% 0 no-repeat;
+  padding-top: 280px;
+  padding-bottom: 400px;
+  padding-right: 600px;
+  padding-left: 600px;
+  
+}
+
+#splash h1 {
+    text-shadow: -2px 2px 2px #D7A21C;
+}
+
+#splash a:link {
+    color: #E7B22C;
+    text-decoration: none;
+}
+
+#splash a:visited {
+    color: #E7B22C;
+    text-decoration: none;
+    /*text-shadow: -1px 1px 1px #221411;*/
+}

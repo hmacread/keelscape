@@ -23,35 +23,35 @@ from google.appengine.ext import ndb
 #     TwitterPage     TODO
 
 class User(ndb.Model):
-    pass
 
-# Vessel (parent=User)
-#     Name
-#     Flag     TODO (ndb.FlagProperty() ?)
-#     HomePort
-#     LengthOverAll
-#     MaratimeMobileServiceIdentity (MMSI)
-#     Callsign     As reported via Airmail / YOTREPS messages
-#     satPhoneNumber
-#     emergencyContact     TODO
-#     publicReportingDelay (Days)     TODO
+    user = ndb.UserProperty()
+    #user_id = ndb.IntegerProperty()
+    #name = ndb.StringProperty()
+    #subscribed_to = ndb.KeyProperty(kind='Vessel',repeated=True)
+    email_address = ndb.StringProperty()    
 
 class Vessel(ndb.Model):
     
+    """Represents an MMS vessel
+    
+    Parent should be a User Entity / Key."""
+    
     name = ndb.StringProperty()
-    callsign = ndb.StringProperty()  #unique
     home_port = ndb.StringProperty()
+    flag = ndb.StringProperty()
     length_over_all = ndb.FloatProperty() #in meters
+    draft = ndb.FloatProperty() #in meters
+    callsign = ndb.StringProperty()  #unique
     mmsi = ndb.StringProperty()  #unique
-    sat_phone_number = ndb.StringProperty()
-
+    onboard_email_address = ndb.StringProperty()
+        
 class Waypoint(ndb.Model):
 
     """NDB datastore class for base class waypoint.
     
     This is a base class at this stage not meant to be used directly."""
 
-    vessel = ndb.KeyProperty(kind=Vessel)
+    vessel = ndb.KeyProperty(kind='Vessel')
     position = ndb.GeoPtProperty(required=True)
     comment = ndb.TextProperty()
     report_date = ndb.DateTimeProperty() 
@@ -68,7 +68,7 @@ class Weather(ndb.Model):
     All measurements are in SI units, period in whole seconds, directions in 
     true degrees, speed in kts.
     """
-    waypoint = ndb.KeyProperty(kind=Waypoint)
+    waypoint = ndb.KeyProperty(kind='Waypoint')
     wind_speed = ndb.FloatProperty()
     wind_direction = ndb.StringProperty()
     wind_waves_height = ndb.FloatProperty()

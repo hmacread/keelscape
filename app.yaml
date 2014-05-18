@@ -16,6 +16,8 @@ handlers:
 
 - url: /stylesheets
   static_dir: stylesheets
+- url: /image
+  static_dir: image
   
 - url: /_ah/mail/.+
   script: emailhandler.application

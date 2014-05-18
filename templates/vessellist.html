@@ -5,12 +5,19 @@
 {% endblock %}
 {% block content %}
     <h1>Current Vessels</h1>
-        <ul>
-            {% for vessel in vessels %}
-            <li><a href='/vessel/{{ vessel.key.id() }}'>{{ vessel.callsign }}<a></li>
-            {% endfor %}
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Callsign</th>
+                <th>Distance from your vessel!</th>
+            </tr>
+        {% for vessel in vessels %}
+            <tr>
+                <td><a href='/vessel/{{ vessel.key.id() }}'>{{ vessel.name }}<a></td>
+                <td>{{ vessel.callsign }}</td>
+                <td></td>
+            </tr>                   
+        {% endfor %}
         </ul>
+        <table>
 {% endblock %}
-{% block footer %}
-    {{ super() }}
-{% endblock %}    
