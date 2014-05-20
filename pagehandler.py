@@ -56,8 +56,10 @@ class MyVessel(webapp2.RequestHandler):
             logging.info('got here')
             self.redirect('/newvessel')     
         template = JINJA_ENV.get_template('myvessel.html')
+        pulic_link='/vessel/' + str(vessel.key.id())
         self.response.write(template.render(
                                         vessel=vessel,
+                                        pulic_link=pulic_link,
                                         user=user,
                                         logouturl=users.create_logout_url('/')
                                         ))

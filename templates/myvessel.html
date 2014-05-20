@@ -9,9 +9,6 @@
 {% block reportform %}
     <h2>Add a position: </h2>
 {% endblock %}
-{% block editlink %}
-    <p><a href='/editvessel'>Edit</a></p>   
-{% endblock %}
 {% block reportrow %}
         <tr>
             <form action="/posreport" method="post">
@@ -28,3 +25,5 @@
     <input type="submit" name="report">
     </form>
 {% endblock %}
+{% block editlink %}<p><a href='/editvessel'>Edit</a></p>{% endblock %}
+{% block publicview %}<p><a href='{{ pulic_link }}'>View as public</a></p>{% endblock %}
