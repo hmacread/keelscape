@@ -1,6 +1,11 @@
 body {
-  font-family: Candara, Helvetica, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #FFFFFF;
+}
+
+table,th,td
+{
+border:1px solid black;
 }
 
 #splash {

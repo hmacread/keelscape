@@ -12,3 +12,19 @@
 {% block editlink %}
     <p><a href='/editvessel'>Edit</a></p>   
 {% endblock %}
+{% block reportrow %}
+        <tr>
+            <form action="/posreport" method="post">
+            <td><input type="text" name="latdeg" maxlength="3" size="3"><input type="text" name="latmin" size="6"></td>
+            <td><input type="text" name="londeg" maxlength="3" size="3"><input type="text" name="lonmin" size="6"></td>
+            <td><input type="datetime" name="reporteddate" size="15"></td>
+            <td><input type="text" name="speed" maxlength="2" size="2">kts</td>
+            <td><input type="text" name="heading" maxlength="3" size="3">°T</td>
+            <td><input type="text" name="depth" size="1">m</td>
+            <td><textarea name="comment" rows="2" cols="40"></textarea></td>
+            
+        </tr>
+    </table>
+    <input type="submit" name="report">
+    </form>
+{% endblock %}
