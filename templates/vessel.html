@@ -1,8 +1,38 @@
 {% extends "base.html" %}
-{% block title %}Landing Page{% endblock %}
+{% block title %}{{ vessel.name }}{% endblock %}
 {% block head %}
     {{ super() }}
 {% endblock %}
+{% block navbar %}
+    <p>Want to create your own page? <a href='{{ loginurl }}'>Login</a></p>
+{% endblock %}
 {% block content %}
-    <h1>Vessel Name:</h1>
+    <h1>{{ vessel.name }}</h1>
+    <h2>Map</h2>
+    <img src='../image/map.png'></img>
+    <h2>Position Reports</h2>
+    <table>
+        <th>
+            <tr>Coordinates</tr>
+            <tr>Date / Time</tr>
+            <tr>Heading</tr>
+            <tr>Speed</tr>
+            <tr>Depth</tr>
+            <tr>Comment</tr>
+            <tr>Weather</tr>
+        <th>
+    </table>
+    
+    {% block reportform %}{% endblock %}
+    
+    <h2>Information</h2>
+    <p><b>Name:</b> {{ vessel.name }}</p>
+    <p><b>Flag:</b> {{ vessel.flag }}</p>
+    <p><b>Home Port:</b>  {{ vessel.home_port }}</p>
+    <p><b>Length:</b> {{ vessel.length_over_all }}</p>
+    <p><b>Draft:</b> {{ vessel.draft }}</p>
+    <p><b>Callsign:</b> {{ vessel.callsign }}</p>    
+    <p><b>MMSI:</b> {{ vessel.mmsi }}</p>
+    {% block editlink %}{% endblock %}
+    
 {% endblock %}

@@ -1,0 +1,14 @@
+{% extends "vessel.html" %}
+{% block title %}{{ vessel.name }}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block navbar %}
+    <p>Logged in as {{ user.nickname() }} <a href="{{ logouturl }}">Logout</a><p>
+{% endblock %}
+{% block reportform %}
+    <h2>Add a position: </h2>
+{% endblock %}
+{% block editlink %}
+    <p><a href='/editvessel'>Edit</a></p>   
+{% endblock %}

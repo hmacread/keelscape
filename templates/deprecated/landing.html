@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Landing Page{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <div> 
+    Hello {{ mms_user.user.nickname() }}
+    </div>
+{% endblock %}

@@ -2,40 +2,20 @@
 # Created by Hugh Macready (hugh@macready.id.au)
 # Data model to be used is NDB for Google App Engine
 #
-# Data Model Overview
-# -------------------
-# User
-# Waypoint
-# Vessel
-# TODO List
-#     Subtype various properties and write _validate methods
-#       Write DirectionProperty which takes 'ENE' etc
 
 from google.appengine.ext import ndb
 
-# User (child=Vessel)     TODO
-#     EmailAddress*
-#     Password
-#     FirstName
-#     LastName
-#     SubscribedTo (Vessel)*
-#     FacebookPage     TODO
-#     TwitterPage     TODO
+class Owner(ndb.Model):
 
-class User(ndb.Model):
+    """Represents an owner of a vessel."""
 
-    user = ndb.UserProperty()
-    #user_id = ndb.IntegerProperty()
-    #name = ndb.StringProperty()
-    #subscribed_to = ndb.KeyProperty(kind='Vessel',repeated=True)
-    email_address = ndb.StringProperty()    
+    owner_id = ndb.UserProperty()
 
+    
 class Vessel(ndb.Model):
     
-    """Represents an MMS vessel
-    
-    Parent should be a User Entity / Key."""
-    
+    """Represents an MMS vessel"""
+
     name = ndb.StringProperty()
     home_port = ndb.StringProperty()
     flag = ndb.StringProperty()
@@ -43,13 +23,10 @@ class Vessel(ndb.Model):
     draft = ndb.FloatProperty() #in meters
     callsign = ndb.StringProperty()  #unique
     mmsi = ndb.StringProperty()  #unique
-    onboard_email_address = ndb.StringProperty()
         
 class Waypoint(ndb.Model):
 
-    """NDB datastore class for base class waypoint.
-    
-    This is a base class at this stage not meant to be used directly."""
+    """NDB datastore class for base class waypoint."""
 
     vessel = ndb.KeyProperty(kind='Vessel')
     position = ndb.GeoPtProperty(required=True)
@@ -68,6 +45,7 @@ class Weather(ndb.Model):
     All measurements are in SI units, period in whole seconds, directions in 
     true degrees, speed in kts.
     """
+    
     waypoint = ndb.KeyProperty(kind='Waypoint')
     wind_speed = ndb.FloatProperty()
     wind_direction = ndb.StringProperty()

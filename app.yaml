@@ -23,9 +23,17 @@ handlers:
   script: emailhandler.application
   login: admin
 
+- url: /newvessel
+  script: pagehandler.application
+  login: required
+  
+- url: /myvessel
+  script: pagehandler.application
+  login: required
+  
 - url: /.*
   script: pagehandler.application
-
+  
 inbound_services:
 
 - mail

@@ -8,15 +8,7 @@
     {% endblock %}
 </head>
 <body>
-    {% block navbar %}
-    <div id="navigation">
-        <ul id="navigation">
-            {% for caption, href in navbar %}
-            <li><a href="{{ href }}">{{ caption }}</a></li>
-            {% endfor %}
-    </ul>
-    </div>
-    {% endblock %}
+    <div id="navbar">{% block navbar %}{% endblock %}</div>
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
         {% block footer %}

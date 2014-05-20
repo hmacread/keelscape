@@ -17,108 +17,134 @@ JINJA_ENV = Environment(
      autoescape=True
      )
 
-class LandingPage(webapp2.RequestHandler):
+class Landing(webapp2.RequestHandler):
 
     def get(self):
-        user = users.get_current_user()
+        user = users.get_current_user()        
         if user:
-            #user is logged in with OpenID / Google Accounts
-            mms_user = datamodel.User.query(datamodel.User.user == user).get()
-            if mms_user:
-                # We've seen this user before send them to landing page
-                logging.info('user_id ' + user.user_id() + ' already seen')
-                template = JINJA_ENV.get_template('landing.html')
-                self.response.write(template.render(
-                                            mms_user=mms_user,
-                                            navbar=get_nav_bar()
-                                            ))
-            else: 
-                # New MMS user, put into the DB and redirect to accounts page
-                logging.info("user_id: " + user.user_id() + " not seen, creating")
-                new_user = datamodel.User()
+            #User is authenticated
+            owner_qry = datamodel.Owner.query(datamodel.Owner.owner_id == user)
+            if not owner_qry.count():
+                #User is not an Owner in DB, add them
+                owner_key = datamodel.Owner(owner_id=user).put()
+            else:
+                #User is an owner in DB, get their key
+                owner_key = owner_qry.get(keys_only=True)
                 
-                new_user.user = user
-                #new_user.user_id = long(user.user_id())
-                #new_user.name = user.nickname()
-                #new_user.email_address = user.email()       
-                new_user.put()
-                self.redirect('/account')
+            if datamodel.Vessel.query(ancestor=owner_key).count():
+                #Owner has a vessel, view it
+                self.redirect('/myvessel')
+            else:
+                #Owner does not have a vessel, send to create form
+                self.redirect('/newvessel')
                 
         else:
-            #redirect to OpenID Auth page / URL
+            #redirect to splash
             template = JINJA_ENV.get_template('splash.html')
             self.response.write(template.render(
                                         loginurl=users.create_login_url('/')
+                                        ))    
+
+class MyVessel(webapp2.RequestHandler):
+    
+    #Authentication enforced by app.yaml
+    def get(self):
+        user = users.get_current_user()
+        vessel = get_vessel(user=user)
+        if not vessel:
+            #owner got here without creating a vessel somehow
+            logging.info('got here')
+            self.redirect('/newvessel')     
+        template = JINJA_ENV.get_template('myvessel.html')
+        self.response.write(template.render(
+                                        vessel=vessel,
+                                        user=user,
+                                        logouturl=users.create_logout_url('/')
                                         ))
-        
-        
-class VesselList(webapp2.RequestHandler):
+                                        
+class NewVessel(webapp2.RequestHandler):
     
     def get(self):
 
-        vessel_query = datamodel.Vessel.query()
-        vessels = vessel_query.fetch(20)
-
-        template = JINJA_ENV.get_template('vessellist.html')
-        self.response.write(template.render(navbar=get_nav_bar(),
-                                            vessels=vessels))
+        user = users.get_current_user()    
+        vessel = get_vessel(user=user)
+        template = template = JINJA_ENV.get_template('newvessel.html')
+        self.response.write(template.render(
+                                        vessel=vessel,
+                                        user=user,
+                                        logouturl=users.create_logout_url('/')
+                                        ))
+    
+    def post(self):
+        #Note that login is required in app.yaml
+        user = users.get_current_user()    
+        owner_key = get_owner_key(user)
+        vessel_qry = datamodel.Vessel.query(ancestor=owner_key)
+        if vessel_qry.count():
+            #editing existing vessel
+            vessel = datamodel.Vessel.query(ancestor=owner_key).get()
+        else:
+            vessel = datamodel.Vessel(parent=owner_key)
+            
+        values = self.request.POST
+        vessel.owner_id = user
+        vessel.name = values['name']
+        vessel.home_port = values['home_port']
+        vessel.flag = values['flag']
+        #need to type check
+        if values['length_over_all']:
+            vessel.length_over_all = float(values['length_over_all'])
+        if values['draft']:
+            vessel.draft = float(values['draft'])
+        #need to check if these are unique
+        vessel.callsign = values['callsign']
+        vessel.mmsi = values['mmsi']
         
+        vessel.put()
+        self.redirect('/myvessel')
+        
+
 class Vessel(webapp2.RequestHandler):
     
     def get(self, vessel_id): 
         
-        vessel = datamodel.Vessel.get_by_id(vessel_id)
-        
+        vessel = get_vessel(id=vessel_id)
         template = JINJA_ENV.get_template('vessel.html')
-        self.response.write(template.render(navbar=get_nav_bar()))        
-
-class Tracking(webapp2.RequestHandler):
-
-    def get(self):
-
-        template = JINJA_ENV.get_template('tracking.html')
-        self.response.write(template.render(navbar=get_nav_bar()))        
-
+        self.response.write(template.render(loginurl=users.create_login_url('/'),
+                                            vessel=vessel))
         
-class About(webapp2.RequestHandler):
+class VesselMap(webapp2.RequestHandler):
 
-    def get(self):
-
-        template = JINJA_ENV.get_template('about.html')
-        self.response.write(template.render(navbar=get_nav_bar()))        
-
-class Account(webapp2.RequestHandler):
-
-    def get(self):
-
-       #TODO
-        user = users.get_current_user()
-        mms_user = datamodel.User.query(datamodel.User.user == user).get()
-        vessel = datamodel.Vessel.query(ancestor=mms_user.key).fetch()
+    def get(self, vessel_id):
         
-        template = JINJA_ENV.get_template('account.html')
-        self.response.write(template.render(navbar=get_nav_bar(),
-                                            mms_user=mms_user,
-                                            vessel=vessel,
-                                            ))        
-        
-                
-def get_nav_bar():
-    
-    """ Returns a list of href, caption tuples for use in the navigation bar """
-    
-    return [('Home', '/'),
-            ('Tracking','/tracking'),
-            ("Who's out there?",'/vessel'),
-            ('About','/about'),
-            ('Account',"/account"),
-            ('Logout',users.create_logout_url('/')),
-           ]
+        vessel = get_vessel(id=vessel_id)
+        template = JINJA_ENV.get_template('vesselmap.html')
+        self.response.write(template.render(vessel=vessel))
+
+#Some DB helper methods
+
+def get_owner_key(user):
+    #Find a way to save this query by generating a Key directly from owner_id
+    return datamodel.Owner.query(datamodel.Owner.owner_id == user).get(
+                                                            keys_only=True)
+
+def has_vessel(user):
+    return datamodel.Vessel.query(ancestor=get_owner_key(user)).count()
+
+def get_vessel(user=None,id=0):
+    if user:
+        return datamodel.Vessel.query(ancestor=get_owner_key(user)).get()  
+    elif id:
+        return ndb.Key('Vessel',str(id)).get()
+    else:
+        return None
+     
            
 application = webapp2.WSGIApplication([
-    ('/', LandingPage),
-    ('/vessel', VesselList),
+    ('/', Landing),
+    ('/myvessel', MyVessel), 
+    ('/newvessel', NewVessel),
+    ('/editvessel', NewVessel),
     ('/vessel/(\d+)', Vessel),
-    ('/about', About),
-    ('/account', Account)
+    ('/vessel/(\d+)/map', VesselMap),
     ], debug=True)

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Welcome to MMS{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <div id="splash"> 
+    <h1>Welcome to MMS</h1>
+    <h2><a href='{{ loginurl }}'>Login</a><h2>
+    </div>
+{% endblock %}
