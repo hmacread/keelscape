@@ -12,8 +12,8 @@
 {% block reportrow %}
         <tr>
             <form action="/posreport" method="post">
-            <td><input type="text" name="latdeg" maxlength="3" size="3"><input type="text" name="latmin" size="6"></td>
-            <td><input type="text" name="londeg" maxlength="3" size="3"><input type="text" name="lonmin" size="6"></td>
+            <td><input type="text" name="latdeg" maxlength="3" size="3">°<input type="text" name="latmin" size="6">min</td>
+            <td><input type="text" name="londeg" maxlength="3" size="3">°<input type="text" name="lonmin" size="6">min</td>
             <td><input type="datetime" name="reporteddate" size="15"></td>
             <td><input type="text" name="speed" maxlength="2" size="2">kts</td>
             <td><input type="text" name="heading" maxlength="3" size="3">°T</td>
@@ -22,6 +22,7 @@
             
         </tr>
     </table>
+    <p>Note:  Seconds of latitude and longitudes should be as decimal minutes. I.e. 85° 3' 30" would be 85° 3.5'</p>
     <input type="submit" name="report">
     </form>
 {% endblock %}
