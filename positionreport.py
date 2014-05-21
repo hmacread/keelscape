@@ -13,11 +13,7 @@ class PositionReport():
     def __init__(self, line_iterator):
     
         """Takes parses the iterator over enumerated sequence of line strings"""
-
-        self.waypoint = Waypoint()
-        self.vessel = Vessel()
-        self.weather = Weather()
-
+        
         #Skip to AIRMAIL header
         for num, line in line_iterator:
             line = line.strip()
@@ -36,22 +32,11 @@ class PositionReport():
         """Writes out required new DB objects and updates relationships
         
         TODO move to PositionReport and make ancestor?)"""
-        existing_vessel = Vessel.query(Vessel.callsign 
-                                                == self.vessel.callsign).get()
-                                                
-        if not existing_vessel:
-            #vessel is new
-            self.waypoint.vessel = self.vessel.put()   
-            logging.info("Create new vessel: %s" % ( self.vessel.callsign))
-    
-        else:
-            #Report is for an existing vessel
-            self.waypoint.vessel = existing_vessel.key
-            logging.info("Assign new report to vessel: %s" % ( self.vessel.callsign))
+        wpt_key =  self.waypoint.put()
+        if self.weather:
+            self.weather.waypoint = wpt_key
+            self.weather.put()
         
-        #attach a weather report TODO (only if weather is actually reported)
-        self.weather.waypoint = self.waypoint.put()
-        self.weather.put()
 
     def parse_yotrep(self, lines_iterator):
 
@@ -66,39 +51,39 @@ class PositionReport():
             #skip lines without semi-colon
             if not seperator: 
                 continue
-            #try:
-            self.write_yotrep_field(type.strip(), data.strip())
-            #except (AssertionError, TypeError, ValueError):
-            #   raise PositionReportError(num,line)
+            try:
+                self.write_yotrep_field(type.strip(), data.strip())
+            except (AssertionError, TypeError, ValueError):
+               raise PositionReportError(num,line)
         
         
             
     def write_yotrep_field(self, type, data):   
         """Maps each field to a waypoint,vessel ndb object property
         
-        Note: Order is important for LATITUDE and LONGITUDE
+        Note: Order is important for LATITUDE and LONGITUDE, IDENT must be first.
+              MARINE : YES must precede weather.  
         """
         
-        if type == 'IDENT':    
-            self.vessel.callsign = data
-            #TODO assert valid callsign based on IMO create a new vessel
-            # create vessel or reference vessel if already exists
+        if type == 'IDENT':  
+            qry = Vessel.query(Vessel.callsign == data)
+            vessel_key = qry.get(keys_only=True)
+            if not vessel_key:
+                raise VesselNotFoundError(data)
+            self.waypoint = Waypoint(parent=vessel_key)
         elif type == 'TIME':
             self.waypoint.report_date = self.parse_yotreps_date(data)        
         elif type == 'LATITUDE': 
-            self.waypoint.position = GeoPt(
-                                                self.parse_yotreps_lat(data),
-                                                0)
+            self.waypoint.position = GeoPt(self.parse_yotreps_lat(data),0)
         elif type == 'LONGITUDE':
-            self.waypoint.position = GeoPt(
-                                                self.waypoint.position.lat,
-                                                self.parse_yotreps_lon(data))
+            self.waypoint.position = GeoPt(self.waypoint.position.lat,
+                                           self.parse_yotreps_lon(data))
         elif type == 'COURSE':
             self.waypoint.course = data
         elif type == 'SPEED':
             self.waypoint.speed = float(data)
         elif type == 'MARINE':
-            pass
+            self.weather = Weather()
         elif type == 'WIND_DIR':
             self.weather.wind_direction = data
         elif type == 'WIND_SPEED':
@@ -182,10 +167,29 @@ class PositionReport():
         return fdegrees
                                          
 class PositionReportError(Exception):
+
     """Raised when an error is encountered parsing an position at line_number"""
+
     def __init__(self, line_number, line):
+
         self.line_number = line_number
         self.line = line
+
     def __str__(self):
+
         return ("Error in email position report on line %s,\n%s" % 
                                 (str(self.line_number), self.line))
+
+class VesselNotFoundError(Exception):
+
+    """Position report received for a vessel not registered previously"""
+
+    def __init__(self, callsign):
+
+        self.callsign = callsign
+
+    def __str__(self):
+
+        return ("Error in email position report: Vessel %s not found." % 
+                                                            self.callsign)
+                                                                

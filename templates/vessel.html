@@ -20,8 +20,19 @@
             <th>Heading</th>
             <th>Depth</th>
             <th>Comment</th>
-            <th>Weather</th>
+            <!--<th>Weather</th>-->
         </tr>
+    {% for wpt in waypoints %}
+        </tr>    
+            <td>{{ wpt.position.lat }}</td>
+            <td>{{ wpt.position.lon }}</td>
+            <td>{{ wpt.report_date }}</td>
+            <td>{{ wpt.speed }}</td>
+            <td>{{ wpt.heading }}</td>
+            <td>{{ wpt.depth }}</td>
+            <td>{{ wpt.comment }}</td>
+        </tr>
+    {% endfor %}
     {% block reportrow %}</table>{% endblock %}
     
     <h2>Vessel Particulars</h2>

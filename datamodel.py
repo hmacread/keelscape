@@ -28,7 +28,6 @@ class Waypoint(ndb.Model):
 
     """NDB datastore class for base class waypoint."""
 
-    vessel = ndb.KeyProperty(kind='Vessel')
     position = ndb.GeoPtProperty(required=True)
     comment = ndb.TextProperty()
     report_date = ndb.DateTimeProperty() 

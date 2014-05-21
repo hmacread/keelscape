@@ -1,7 +1,6 @@
 import logging
 import webapp2
 import urllib
-import datetime
 import os
 
 from google.appengine.ext import ndb
@@ -51,6 +50,8 @@ class Landing(webapp2.RequestHandler):
 
 class MyVessel(webapp2.RequestHandler):
     
+    NUM_WAYPOINTS = 10
+    
     #Authentication enforced by app.yaml
     def get(self):
         user = users.get_current_user()
@@ -58,15 +59,23 @@ class MyVessel(webapp2.RequestHandler):
         if not vessel:
             #owner got here without creating a vessel somehow
             logging.info('got here')
-            self.redirect('/newvessel')     
+            self.redirect('/newvessel') 
+        
+        wpt_qry = datamodel.Waypoint.query(ancestor=vessel.key).order(
+                                                datamodel.Waypoint.report_date)
+                                        
+        
         template = JINJA_ENV.get_template('myvessel.html')
-        pulic_link='/vessel/key/' + vessel.key.urlsafe()
-        self.response.write(template.render(
-                                        vessel=vessel,
-                                        pulic_link=pulic_link,
-                                        user=user,
-                                        logouturl=users.create_logout_url('/')
-                                        ))
+        params = {
+            'user' : user,
+            'vessel' : vessel,
+            'pulic_link' : '/vessel/key/' + vessel.key.urlsafe(),
+            'submit_wpt_url' : '/posreport/key/' + vessel.key.urlsafe(),
+            'logouturl' : users.create_logout_url('/'),
+            'waypoints' :  wpt_qry.fetch(self.NUM_WAYPOINTS),
+        }
+            
+        self.response.write(template.render(params))
                                         
 class NewVessel(webapp2.RequestHandler):
     
@@ -108,7 +117,6 @@ class NewVessel(webapp2.RequestHandler):
         
         vessel.put()
         self.redirect('/myvessel')
-        
 
 class Vessel(webapp2.RequestHandler):
     
@@ -140,7 +148,11 @@ def has_vessel(user):
 
 def get_vessel(user):
 
-    return datamodel.Vessel.query(ancestor=get_owner_key(user)).get()  
+    return datamodel.Vessel.query(ancestor=get_owner_key(user)).get()
+
+def get_vessel_key(user):
+
+    return datamodel.Vessel.query(ancestor=get_owner_key(user)).get(keys_only=True)
      
            
 application = webapp2.WSGIApplication([

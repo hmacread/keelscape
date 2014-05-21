@@ -23,6 +23,11 @@ handlers:
   script: emailhandler.application
   login: admin
 
+- url: /posreport/.*
+  script: webpositionreport.application
+  login: required
+  
+
 - url: /newvessel
   script: pagehandler.application
   login: required
