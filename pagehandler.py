@@ -23,10 +23,14 @@ class Landing(webapp2.RequestHandler):
         user = users.get_current_user()        
         if user:
             #User is authenticated
-            owner_qry = datamodel.Owner.query(datamodel.Owner.owner_id == user)
+            owner_qry = datamodel.Owner.query(datamodel.Owner.id == user.user_id())
             if not owner_qry.count():
                 #User is not an Owner in DB, add them
-                owner_key = datamodel.Owner(owner_id=user).put()
+                owner = datamodel.Owner(id=user.user_id(),
+                                        email=user.email(),
+                                        nickname=user.nickname(),
+                                        )
+                owner_key = owner.put()
             else:
                 #User is an owner in DB, get their key
                 owner_key = owner_qry.get(keys_only=True)
@@ -89,7 +93,7 @@ class NewVessel(webapp2.RequestHandler):
             vessel = datamodel.Vessel(parent=owner_key)
             
         values = self.request.POST
-        vessel.owner_id = user
+        vessel.owner_id = user.user_id()
         vessel.name = values['name']
         vessel.home_port = values['home_port']
         vessel.flag = values['flag']
@@ -127,8 +131,8 @@ class VesselMap(webapp2.RequestHandler):
 
 def get_owner_key(user):
     #Find a way to save this query by generating a Key directly from owner_id
-    return datamodel.Owner.query(datamodel.Owner.owner_id == user).get(
-                                                            keys_only=True)
+    owner = datamodel.Owner.query(datamodel.Owner.id == user.user_id())
+    return owner.get(keys_only=True)
 
 def has_vessel(user):
 

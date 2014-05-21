@@ -2,15 +2,15 @@
 # Created by Hugh Macready (hugh@macready.id.au)
 # Data model to be used is NDB for Google App Engine
 #
-
 from google.appengine.ext import ndb
 
 class Owner(ndb.Model):
 
     """Represents an owner of a vessel."""
 
-    owner_id = ndb.UserProperty()
-
+    id = ndb.StringProperty()
+    email = ndb.StringProperty()
+    nickname = ndb.StringProperty()
     
 class Vessel(ndb.Model):
     
