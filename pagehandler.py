@@ -56,7 +56,7 @@ class MyVessel(webapp2.RequestHandler):
             logging.info('got here')
             self.redirect('/newvessel')     
         template = JINJA_ENV.get_template('myvessel.html')
-        pulic_link='/vessel/' + str(vessel.key.id())
+        pulic_link='/vessel/key/' + vessel.key.urlsafe()
         self.response.write(template.render(
                                         vessel=vessel,
                                         pulic_link=pulic_link,
@@ -108,18 +108,18 @@ class NewVessel(webapp2.RequestHandler):
 
 class Vessel(webapp2.RequestHandler):
     
-    def get(self, vessel_id): 
+    def get(self, vessel_key): 
         
-        vessel = get_vessel(id=vessel_id)
+        vessel = ndb.Key(urlsafe=vessel_key).get()
         template = JINJA_ENV.get_template('vessel.html')
         self.response.write(template.render(loginurl=users.create_login_url('/'),
                                             vessel=vessel))
         
 class VesselMap(webapp2.RequestHandler):
 
-    def get(self, vessel_id):
+    def get(self, vessel_key):
         
-        vessel = get_vessel(id=vessel_id)
+        vessel = vessel_key.get()
         template = JINJA_ENV.get_template('vesselmap.html')
         self.response.write(template.render(vessel=vessel))
 
@@ -131,15 +131,12 @@ def get_owner_key(user):
                                                             keys_only=True)
 
 def has_vessel(user):
+
     return datamodel.Vessel.query(ancestor=get_owner_key(user)).count()
 
-def get_vessel(user=None,id=0):
-    if user:
-        return datamodel.Vessel.query(ancestor=get_owner_key(user)).get()  
-    elif id:
-        return ndb.Key('Vessel',str(id)).get()
-    else:
-        return None
+def get_vessel(user):
+
+    return datamodel.Vessel.query(ancestor=get_owner_key(user)).get()  
      
            
 application = webapp2.WSGIApplication([
@@ -147,6 +144,6 @@ application = webapp2.WSGIApplication([
     ('/myvessel', MyVessel), 
     ('/newvessel', NewVessel),
     ('/editvessel', NewVessel),
-    ('/vessel/(\d+)', Vessel),
-    ('/vessel/(\d+)/map', VesselMap),
+    ('/vessel/key/(.+)', Vessel),
+    ('/vessel/map/(\d+)', VesselMap),
     ], debug=True)
