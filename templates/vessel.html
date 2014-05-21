@@ -26,12 +26,9 @@
     
     <h2>Vessel Particulars</h2>
     <p><b>Name:</b> {{ vessel.name }}</p>
-    <p><b>Flag:</b> {{ vessel.flag }}</p>
-    <p><b>Home Port:</b>  {{ vessel.home_port }}</p>
     <p><b>Length:</b> {{ vessel.length_over_all }}</p>
     <p><b>Draft:</b> {{ vessel.draft }}</p>
-    <p><b>Callsign:</b> {{ vessel.callsign }}</p>    
-    <p><b>MMSI:</b> {{ vessel.mmsi }}</p>
+    {% block privatedata %}{% endblock %}
     {% block editlink %}{% endblock %}
     {% block publicview %}{% endblock %}
 {% endblock %}
