@@ -120,12 +120,20 @@ class NewVessel(webapp2.RequestHandler):
 
 class Vessel(webapp2.RequestHandler):
     
+    NUM_WAYPOINTS = 5
+    
     def get(self, vessel_key): 
         
         vessel = ndb.Key(urlsafe=vessel_key).get()
         template = JINJA_ENV.get_template('vessel.html')
+        wpt_qry = datamodel.Waypoint.query(ancestor=vessel.key).order(
+                                                datamodel.Waypoint.report_date)
+                                                
         self.response.write(template.render(loginurl=users.create_login_url('/'),
-                                            vessel=vessel))
+                                            vessel=vessel,
+                                            waypoints=wpt_qry.fetch(self.NUM_WAYPOINTS),
+                                            ))
+                                            
         
 class VesselMap(webapp2.RequestHandler):
 
