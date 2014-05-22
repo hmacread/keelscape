@@ -6,6 +6,7 @@ import logging
 import datetime
 
 from datamodel import *
+from google.appengine.ext import ndb
 
 class PositionReport():
 
@@ -74,10 +75,10 @@ class PositionReport():
         elif type == 'TIME':
             self.waypoint.report_date = self.parse_yotreps_date(data)        
         elif type == 'LATITUDE': 
-            self.waypoint.position = GeoPt(self.parse_yotreps_lat(data),0)
+            self.waypoint.position = ndb.GeoPt(self.parse_yotreps_lat(data),0)
         elif type == 'LONGITUDE':
-            self.waypoint.position = GeoPt(self.waypoint.position.lat,
-                                           self.parse_yotreps_lon(data))
+            self.waypoint.position = ndb.GeoPt(self.waypoint.position.lat,
+                                               self.parse_yotreps_lon(data))
         elif type == 'COURSE':
             self.waypoint.course = data
         elif type == 'SPEED':

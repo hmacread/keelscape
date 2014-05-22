@@ -9,27 +9,27 @@
 {% block content %}
     <h1>{{ vessel.name }}</h1>
     <h2>Map</h2>
-    <img src='/image/map.png'></img>
+    <img src='/image/map.png'>
     <h2>Position Reports</h2>
     <table>
         <tr>
             <th>Latitude</th>
             <th>Longitude</th>
             <th>Date / Time</th>
-            <th>Speed</th>
-            <th>Heading</th>
             <th>Depth</th>
+            <th>Speed</th>
+            <th>Course</th>
             <th>Comment</th>
             <!--<th>Weather</th>-->
         </tr>
     {% for wpt in waypoints %}
         </tr>    
-            <td>{{ wpt.position.lat }}</td>
-            <td>{{ wpt.position.lon }}</td>
+            <td>{{ wpt.human_readable_lat }}</td>
+            <td>{{ wpt.human_readable_lon }}</td>
             <td>{{ wpt.report_date }}</td>
-            <td>{{ wpt.speed }}</td>
-            <td>{{ wpt.heading }}</td>
             <td>{{ wpt.depth }}</td>
+            <td>{{ wpt.speed }}</td>
+            <td>{{ wpt.course }}</td>
             <td>{{ wpt.comment }}</td>
         </tr>
     {% endfor %}

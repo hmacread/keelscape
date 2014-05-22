@@ -4,6 +4,9 @@
 #
 from google.appengine.ext import ndb
 
+from geocal.point import Point
+
+
 class Owner(ndb.Model):
 
     """Represents an owner of a vessel."""
@@ -11,7 +14,8 @@ class Owner(ndb.Model):
     id = ndb.StringProperty()
     email = ndb.StringProperty()
     nickname = ndb.StringProperty()
-    
+
+
 class Vessel(ndb.Model):
     
     """Represents an MMS vessel"""
@@ -23,7 +27,8 @@ class Vessel(ndb.Model):
     draft = ndb.FloatProperty() #in meters
     callsign = ndb.StringProperty()  #unique
     mmsi = ndb.StringProperty()  #unique
-        
+
+
 class Waypoint(ndb.Model):
 
     """NDB datastore class for base class waypoint."""
@@ -36,7 +41,16 @@ class Waypoint(ndb.Model):
     course = ndb.StringProperty()
     speed = ndb.FloatProperty()
     depth = ndb.FloatProperty()
-    
+
+    @property
+    def human_readable_lat(self):
+        return Point.human_readable_lat(self.position.lat)
+
+    @property
+    def human_readable_lon(self):
+        return Point.human_readable_lon(self.position.lon)
+
+
 class Weather(ndb.Model):
     
     """ NDB datastore object capturing the weather observation. 
@@ -59,13 +73,3 @@ class Weather(ndb.Model):
     visibility = ndb.FloatProperty()
     air_temperature = ndb.FloatProperty()
     sea_temperature = ndb.FloatProperty()
-    
-class GeoPt(ndb.GeoPt):
-     
-    """Wrapper for GAE GeoPt
-    
-    Needed in order to maintain client abstraction from google.appengine.ext.ndb 
-    """
-    pass
-    
-
