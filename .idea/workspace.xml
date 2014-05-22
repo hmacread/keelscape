@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="db44b064-72d6-455c-96fe-3fd893f1201f" name="Default" comment="Created geocal package for human readable lat/lons.  Started using PyCharm 3 (may commit .idea).">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/geocal/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/geocal/point.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.yaml" afterPath="$PROJECT_DIR$/app.yaml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/datamodel.py" afterPath="$PROJECT_DIR$/datamodel.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/default.iml" afterPath="$PROJECT_DIR$/.idea/default.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/myvessel.html" afterPath="$PROJECT_DIR$/templates/myvessel.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/positionreport.py" afterPath="$PROJECT_DIR$/positionreport.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/vessel.html" afterPath="$PROJECT_DIR$/templates/vessel.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/webpositionreport.py" afterPath="$PROJECT_DIR$/webpositionreport.py" />
+    <list default="true" id="db44b064-72d6-455c-96fe-3fd893f1201f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="default.iws" />
@@ -41,7 +31,7 @@
       <file leaf-file-name="positionreport.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/positionreport.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="0" selection-start="158" selection-end="158" vertical-scroll-proportion="0.16100179" vertical-offset="0" max-vertical-offset="3015">
+            <state line="6" column="0" selection-start="158" selection-end="158" vertical-scroll-proportion="0.16157989" vertical-offset="0" max-vertical-offset="3015">
               <folding />
             </state>
           </provider>
@@ -513,6 +503,11 @@
       <created>1399356558739</created>
       <updated>1399356558739</updated>
     </task>
+    <task id="LOCAL-00001" summary="Created geocal package for human readable lat/lons.  Started using PyCharm 3 (may commit .idea).">
+      <created>1400744094316</created>
+      <updated>1400744094316</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -541,16 +536,17 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24395604" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32929516" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25210628" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23201555" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32967034" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33039647" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -571,7 +567,8 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Created geocal package for human readable lat/lons.  Started using PyCharm 3 (may commit .idea)." />
+    <option name="LAST_COMMIT_MESSAGE" value="Created geocal package for human readable lat/lons.  Started using PyCharm 3 (may commit .idea)." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -921,7 +918,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/positionreport.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="158" selection-end="158" vertical-scroll-proportion="0.16100179" vertical-offset="0" max-vertical-offset="3015">
+        <state line="6" column="0" selection-start="158" selection-end="158" vertical-scroll-proportion="0.16157989" vertical-offset="0" max-vertical-offset="3015">
           <folding />
         </state>
       </provider>
