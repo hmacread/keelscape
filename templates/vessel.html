@@ -8,8 +8,8 @@
 {% endblock %}
 {% block content %}
     <h1>{{ vessel.name }}</h1>
-    <h2>Map</h2>
-    <img src='/image/map.png'>
+    <iframe width="600" height="450" frameborder="0" style="border:0"
+        src="{{ map_url }}"></iframe>
     <h2>Position Reports</h2>
     <table>
         <tr>
@@ -22,6 +22,7 @@
             <th>Comment</th>
             <!--<th>Weather</th>-->
         </tr>
+    {% block reportrow %}</table>{% endblock %}
     {% for wpt in waypoints %}
         </tr>    
             <td>{{ wpt.human_readable_lat }}</td>
@@ -33,8 +34,8 @@
             <td>{{ wpt.comment }}</td>
         </tr>
     {% endfor %}
-    {% block reportrow %}</table>{% endblock %}
-    
+    </table>
+
     <h2>Vessel Particulars</h2>
     <p><b>Name:</b> {{ vessel.name }}</p>
     <p><b>Length:</b> {{ vessel.length_over_all }}</p>

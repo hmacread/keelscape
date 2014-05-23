@@ -18,12 +18,9 @@
             <td><input type="text" name="depth" size="1">m</td>
             <td><input type="text" name="speed" maxlength="2" size="2">kts</td>
             <td><input type="text" name="course" maxlength="3" size="3">°T</td>
-            <td><textarea name="comment" rows="2" cols="40"></textarea></td> 
+            <td><textarea name="comment" rows="2" cols="40"></textarea><input type="submit" name="report"></td>
+            </form>
         </tr>
-    </table>
-    <p>Note:  Seconds of latitude and longitudes should be as decimal minutes. I.e. 85° 3' 30" would be 85° 3.5'</p>
-    <input type="submit" name="report">
-    </form>
 {% endblock %}
 {% block privatedata %}    
     <p><b>Callsign:</b> {{ vessel.callsign }}</p>    

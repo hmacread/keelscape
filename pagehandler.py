@@ -16,6 +16,8 @@ JINJA_ENV = Environment(
      autoescape=True
      )
 
+GMAPS_EMBED_API_KEY = "AIzaSyBMhILdBdcbYKlKzYg3WeiMfO_Y0tFd-XM"
+
 class Landing(webapp2.RequestHandler):
 
     def get(self):
@@ -62,8 +64,13 @@ class MyVessel(webapp2.RequestHandler):
             self.redirect('/newvessel') 
         
         wpt_qry = datamodel.Waypoint.query(ancestor=vessel.key).order(
-                                                datamodel.Waypoint.report_date)
-                                        
+                                                -datamodel.Waypoint.report_date)
+        map_url = ( "https://www.google.com/maps/embed/v1/place" +
+                 "?key=" + GMAPS_EMBED_API_KEY +
+                 "&q=" + str(wpt_qry.get().position) +
+                 "&zoom=5" +
+                 "&maptype=satellite"
+                  )
         
         template = JINJA_ENV.get_template('myvessel.html')
         params = {
@@ -72,6 +79,7 @@ class MyVessel(webapp2.RequestHandler):
             'pulic_link' : '/vessel/key/' + vessel.key.urlsafe(),
             'submit_wpt_url' : '/posreport/key/' + vessel.key.urlsafe(),
             'logouturl' : users.create_logout_url('/'),
+            'map_url' : map_url,
             'waypoints' :  wpt_qry.fetch(self.NUM_WAYPOINTS),
         }
             
