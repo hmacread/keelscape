@@ -46,9 +46,9 @@ class Point():
     @staticmethod
     def human_readable_lat(degrees):
         if degrees >= 0:
-            return Point.human_readable(degrees) + ' N'
+            return Point.human_readable(abs(degrees)) + ' N'
         else:
-            return Point.human_readable(degrees) + ' S'
+            return Point.human_readable(abs(degrees)) + ' S'
 
     @staticmethod
     def human_readable_lon(degrees):
