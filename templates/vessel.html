@@ -22,7 +22,7 @@
             <th>Comment</th>
             <!--<th>Weather</th>-->
         </tr>
-    {% block reportrow %}</table>{% endblock %}
+    {% block reportrow %}{% endblock %}
     {% for wpt in waypoints %}
         </tr>    
             <td>{{ wpt.human_readable_lat }}</td>
@@ -31,7 +31,7 @@
             <td>{{ wpt.depth }}</td>
             <td>{{ wpt.speed }}</td>
             <td>{{ wpt.course }}</td>
-            <td>{{ wpt.comment }}</td>
+            <td>{{ wpt.comment | safe }}</td>
         </tr>
     {% endfor %}
     </table>

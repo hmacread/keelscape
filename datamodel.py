@@ -15,18 +15,22 @@ class Owner(ndb.Model):
     email = ndb.StringProperty()
     nickname = ndb.StringProperty()
 
+def validate_callsign(property, value):
+
+    value = value.strip()
+    return value
 
 class Vessel(ndb.Model):
     
     """Represents an MMS vessel"""
 
     name = ndb.StringProperty()
+    email = ndb.StringProperty()
     home_port = ndb.StringProperty()
     flag = ndb.StringProperty()
     length_over_all = ndb.FloatProperty() #in meters
     draft = ndb.FloatProperty() #in meters
-    callsign = ndb.StringProperty()  #unique
-    mmsi = ndb.StringProperty()  #unique
+    callsign = ndb.StringProperty(validator=validate_callsign)  #unique
 
 
 class Waypoint(ndb.Model):

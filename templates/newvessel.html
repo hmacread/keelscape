@@ -17,6 +17,10 @@
         <p><input type="text" name="name" value="{{ vessel.name }}"><br>
         i.e. Seadancer</p>
 
+        <h3>Email Address: *</h3>
+        <p><input type="text" name="email" value="{{ vessel.email }}"><br>
+        i.e. Seadancer</p>
+
         <h3>Home Port:</h3>
         <p><input type="text" name="home_port" value="{{ vessel.home_port }}"><br>
         i.e. Redondo Beach, Montepellier ..</p>
@@ -38,17 +42,9 @@
         I.e. XYZ1234, ABCXYZ<br>
         Note: Must exactly match HF callsign used in YOTREPS style reports for this vessel.</p>
     
-        <h3>MMSI</h3>
-        <p>i.e. 512123456.<br>
-        <input type="text" name="mmsi" value="{{ vessel.mmsi }}"></p>
-    
-        <h3>On Board Email Address:</h3>
-        <p><input type="text" name="onboard_email_address" value="{{ vessel.onboard_email_address }}"><br>
-        i.e. XYZ1234@sailmail.com or ABCXYZ@winlink.org.<br> 
-        Note: We will never distribute email to this address, it is used to verify received position reports only.</p>
-        
-        <p><input type="submit"></p>
+<p><input type="submit"></p>
     </form>
+<p><b>{{ errormsg }}</b></p>
 </div>
 
 {% endblock %}
