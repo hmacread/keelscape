@@ -14,31 +14,31 @@
     <form action="/newvessel" method="post">
 
         <h3>Name: *</h3>
-        <p><input type="text" name="name" value="{{ vessel.name }}"><br>
+        <p><input type="text" name="name" value="{{ name }}"><span id="errortext">{{ name_err }}</span><br>
         i.e. Seadancer</p>
 
         <h3>Email Address: *</h3>
-        <p><input type="text" name="email" value="{{ vessel.email }}"><br>
-        i.e. Seadancer</p>
+        <p><input type="text" name="email" value="{{ email }}"><span id="errortext">{{ email_err }}</span><br>
+        i.e. svseadancer@yahoo.com</p>
 
         <h3>Home Port:</h3>
-        <p><input type="text" name="home_port" value="{{ vessel.home_port }}"><br>
+        <p><input type="text" name="home_port" value="{{ home_port }}"><span id="errortext">{{ home_port_err }}</span><br>
         i.e. Redondo Beach, Montepellier ..</p>
     
         <h3>Flag:</h3>
-        <p><input type="text" name="flag" value="{{ vessel.flag }}"><br>
+        <p><input type="text" name="flag" value="{{ flag }}"><span id="errortext">{{ flag_err }}</span><br>
         i.e. USA, France ..</p>
            
         <h3>Length Over All (in meters)</h3>
-        <p><input type="text" name="length_over_all" value="{% if vessel.length_over_all %}{{ vessel.length_over_all }}{% endif %}"><br>
+        <p><input type="text" name="loa" value="{{ loa }}"><span id="errortext">{{ loa_err }}</span><br>
         i.e. 13.3 for a (44ft vessel)</p>
 
         <h3>Draft (in meters)</h3>
-        <p><input type="text" name="draft" value="{% if vessel.draft %}{{ vessel.draft }}{% endif %}"><br>
+        <p><input type="text" name="draft" value="{{ draft }}"><span id="errortext">{{ draft_err }}</span><br>
         i.e. 2.0 for a (6"5' draft)</p>
     
         <h3>Callsign:</h3>
-        <p><input type="text" name="callsign" value="{{ vessel.callsign }}"><br>
+        <p><input type="text" name="callsign" value="{{ callsign }}"><span id="errortext">{{ callsign_err }}</span><br>
         I.e. XYZ1234, ABCXYZ<br>
         Note: Must exactly match HF callsign used in YOTREPS style reports for this vessel.</p>
     

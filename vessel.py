@@ -58,12 +58,13 @@ class MyVesselPage(VesselPage):
 
     #Authentication enforced by app.yaml
     def get(self):
-        vessel_key = Vessel.get_key()
         if not Vessel.exists():
             #owner got here without creating a vessel somehow
             self.redirect('/newvessel')
-        template = JINJA_ENV.get_template('myvessel.html')
-        self.response.write(template.render(self.get_template_params(vessel_key)))
+        else:
+            vessel_key = Vessel.get_key()
+            template = JINJA_ENV.get_template('myvessel.html')
+            self.response.write(template.render(self.get_template_params(vessel_key)))
 
 application = WSGIApplication([('/myvessel', MyVesselPage),
                                ('/vessel/key/(.+)', VesselPage),

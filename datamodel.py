@@ -16,9 +16,10 @@ class Owner(ndb.Model):
     nickname = ndb.StringProperty()
 
     @classmethod
-    def exists(cls, user=None):
+    def exists(cls, user=None, email=None):
         """Test for existence of a user.
 
+        :param email: use to check for vessels with that email address.
         :param user: user paramenter, if unspecified current user will be queried.
         :return: non-zero if the Owner exists.
         """
@@ -56,12 +57,16 @@ class Vessel(ndb.Model):
     email = ndb.StringProperty()
     home_port = ndb.StringProperty()
     flag = ndb.StringProperty()
-    length_over_all = ndb.FloatProperty() #in meters
+    loa = ndb.FloatProperty() #in meters
     draft = ndb.FloatProperty() #in meters
     callsign = ndb.StringProperty(validator=validate_callsign)  #unique
 
     @classmethod
-    def exists(cls, owner_key=None):
+    def exists(cls, owner_key=None, email=None, callsign=None):
+        if callsign:
+            return Vessel.query(Vessel.callsign == callsign).count(limit=1)
+        if email:
+            return Vessel.query(Vessel.email == email).count(limit=1)
         if not owner_key:
             owner_key = Owner.get_key(users.get_current_user())
         return Vessel.query(ancestor=owner_key).count(limit=1)
@@ -74,7 +79,7 @@ class Vessel(ndb.Model):
 
     @classmethod
     def get(cls, owner_key=None):
-        return Owner.get_key(owner_key).get()
+        return Vessel.get_key(owner_key).get()
 
 
 class Waypoint(ndb.Model):
