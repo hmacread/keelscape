@@ -40,4 +40,4 @@ class WebPositionReport(webapp2.RequestHandler):
 
 application = webapp2.WSGIApplication([
     ('/posreport/key/(.+)', WebPositionReport),
-    ], debug=True)
+    ])

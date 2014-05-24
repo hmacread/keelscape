@@ -2,10 +2,10 @@
 # Created by Hugh Macready (hugh@macready.id.au)
 # Data model to be used is NDB for Google App Engine
 #
+from google.appengine.api import users
 from google.appengine.ext import ndb
 
 from geocal.point import Point
-
 
 class Owner(ndb.Model):
 
@@ -14,6 +14,23 @@ class Owner(ndb.Model):
     id = ndb.StringProperty()
     email = ndb.StringProperty()
     nickname = ndb.StringProperty()
+
+    @classmethod
+    def get_key(cls, user=None):
+        """
+        Return a key to an Owner object.
+
+        :param user: Optional google user object, if not specified then current user is called.
+        :return: ndb.Key for specified user, or current user if None.
+        """
+        if not user:
+            user = users.get_current_user()
+        return Owner.query(Owner.id == user.user_id()).get(keys_only=True)
+
+    @classmethod
+    def get(cls, user=None):
+        return Owner.get_key(user).get()
+
 
 def validate_callsign(property, value):
 
