@@ -30,13 +30,16 @@ handlers:
   
 
 - url: /newvessel
-  script: pagehandler.application
+  script: newvessel.application
   login: required
   
 - url: /myvessel
-  script: pagehandler.application
+  script: vessel.application
   login: required
-  
+
+- url: /vessel/key/.+
+  script: vessel.application
+
 - url: /.*
   script: pagehandler.application
   

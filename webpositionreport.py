@@ -34,6 +34,7 @@ class WebPositionReport(webapp2.RequestHandler):
             wpt.put()
         except (ValueError,BadValueError):
             logging.info("Bad Value Entered.")
+            #TODO create messaging for bad values / highlighting
 
         self.redirect('/myvessel')
 

@@ -17,6 +17,11 @@ class Owner(ndb.Model):
 
     @classmethod
     def exists(cls, user=None):
+        """Test for existence of a user.
+
+        :param user: user paramenter, if unspecified current user will be queried.
+        :return: non-zero if the Owner exists.
+        """
         if not user:
             user = users.get_current_user()
         return Owner.query(Owner.id == user.user_id()).count(limit=1)
@@ -24,8 +29,7 @@ class Owner(ndb.Model):
 
     @classmethod
     def get_key(cls, user=None):
-        """
-        Return a key to an Owner object.
+        """Return a key to an Owner object.
 
         :param user: Optional google user object, if not specified then current user is called.
         :return: ndb.Key for specified user, or current user if None.
@@ -57,10 +61,20 @@ class Vessel(ndb.Model):
     callsign = ndb.StringProperty(validator=validate_callsign)  #unique
 
     @classmethod
-    def exists(cls, user=None):
-        if not user:
-            user = users.get_current_user()
-        return Vessel.query(ancestor=Owner.get_key(user)).count()
+    def exists(cls, owner_key=None):
+        if not owner_key:
+            owner_key = Owner.get_key(users.get_current_user())
+        return Vessel.query(ancestor=owner_key).count(limit=1)
+
+    @classmethod
+    def get_key(cls, owner_key=None):
+        if not owner_key:
+            owner_key = Owner.get_key(users.get_current_user())
+        return Vessel.query(ancestor=owner_key).get(keys_only=True)
+
+    @classmethod
+    def get(cls, owner_key=None):
+        return Owner.get_key(owner_key).get()
 
 
 class Waypoint(ndb.Model):
