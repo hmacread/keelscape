@@ -20,8 +20,7 @@ class LandingPage(RequestHandler):
         user = users.get_current_user()
         if user:
             #User is authenticated
-            owner_qry = Owner.query(Owner.id == user.user_id())
-            if not owner_qry.count():
+            if not Owner.exists(user):
                 #User is not an Owner in DB, add them
                 owner = Owner(id=user.user_id(),
                               email=user.email(),
@@ -30,7 +29,7 @@ class LandingPage(RequestHandler):
                 owner_key = owner.put()
             else:
                 #User is an owner in DB, get their key
-                owner_key = owner_qry.get(keys_only=True)
+                owner_key = Owner.get_key(user)
 
             if Vessel.query(ancestor=owner_key).count():
                 #Owner has a vessel, view it
@@ -38,7 +37,6 @@ class LandingPage(RequestHandler):
             else:
                 #Owner does not have a vessel, send to create form
                 self.redirect('/newvessel')
-
         else:
             #redirect to splash
             template = JINJA_ENV.get_template('splash.html')
@@ -178,10 +176,6 @@ class NewVesselPage(RequestHandler):
 #         self.response.write(template.render(vessel=vessel))
 
 #Some DB helper methods
-
-def has_vessel(user):
-    return Vessel.query(ancestor=Owner.get_key()).count()
-
 
 def get_vessel(user):
     return Vessel.query(ancestor=Owner.get_key()).get()

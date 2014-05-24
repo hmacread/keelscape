@@ -16,6 +16,13 @@ class Owner(ndb.Model):
     nickname = ndb.StringProperty()
 
     @classmethod
+    def exists(cls, user=None):
+        if not user:
+            user = users.get_current_user()
+        return Owner.query(Owner.id == user.user_id()).count(limit=1)
+
+
+    @classmethod
     def get_key(cls, user=None):
         """
         Return a key to an Owner object.
@@ -48,6 +55,12 @@ class Vessel(ndb.Model):
     length_over_all = ndb.FloatProperty() #in meters
     draft = ndb.FloatProperty() #in meters
     callsign = ndb.StringProperty(validator=validate_callsign)  #unique
+
+    @classmethod
+    def exists(cls, user=None):
+        if not user:
+            user = users.get_current_user()
+        return Vessel.query(ancestor=Owner.get_key(user)).count()
 
 
 class Waypoint(ndb.Model):
