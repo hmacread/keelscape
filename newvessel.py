@@ -40,7 +40,7 @@ class NewVesselPage(RequestHandler):
             self.valid = False
 
     def add_email(self):
-        """Adds mandatory valid name."""
+        """Adds mandatory valid email."""
         try:
             try:
                 assert re.match("[^@]+@[^@]+\.[^@]+", self.fd['email'])

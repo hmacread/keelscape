@@ -27,5 +27,4 @@ class PositionReportMailHandler(InboundMailHandler):
             raise PositionReportError(0,"<No plain text body found in message>")
         
 #webapp2 attribute 
-application = webapp2.WSGIApplication([PositionReportMailHandler.mapping()], 
-                                                            debug=True)
+application = webapp2.WSGIApplication([PositionReportMailHandler.mapping()])
