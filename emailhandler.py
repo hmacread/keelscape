@@ -5,14 +5,12 @@
 import logging
 import webapp2
 import positionreport
-import datamodel
 
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 
 class PositionReportMailHandler(InboundMailHandler):
     
     def receive(self, message):
-    
         logging.info("Received a message from: " + message.sender)
         plaintext_bodies = message.bodies('text/plain')
         body_count = 0
@@ -22,9 +20,9 @@ class PositionReportMailHandler(InboundMailHandler):
             body_iterator = enumerate(body.decode().splitlines())
             report = positionreport.PositionReport(body_iterator)
             report.put_contents()
-              
+
         if not body_count > 0:
-            raise PositionReportError(0,"<No plain text body found in message>")
+            raise positionreport.PositionReportError(0, "<No plain text body found in message>")
         
 #webapp2 attribute 
-application = webapp2.WSGIApplication([PositionReportMailHandler.mapping()])
+application = webapp2.WSGIApplication([PositionReportMailHandler.mapping()], debug=True)

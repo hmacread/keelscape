@@ -23,6 +23,7 @@ class NewVesselPage(RequestHandler):
         template = JINJA_ENV.get_template('newvessel.html')
         params = {'user': users.get_current_user(),
                   'logouturl': users.create_logout_url('/'),
+                  'email': users.get_current_user().email()
                   }
         if extra_params:
             params.update(extra_params)
@@ -33,7 +34,7 @@ class NewVesselPage(RequestHandler):
         try:
             for word in self.fd['name'].split():
                 assert word.isalnum()
-            self.vessel.name = string.capwords(self.fd['name'])
+            self.vessel.name = self.fd['name'].strip()
             assert 0 < len(self.vessel.name) <= 100
         except(ValueError, TypeError, BadValueError, AssertionError):
             self.fd.update({'name_err': "Please enter your vessel name (up 100 letter, numbers or spaces)."})
