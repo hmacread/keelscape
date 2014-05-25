@@ -10,23 +10,31 @@ class VesselPage(RequestHandler):
     NUM_WAYPOINTS = 5
     GMAPS_EMBED_API_KEY = "AIzaSyBMhILdBdcbYKlKzYg3WeiMfO_Y0tFd-XM"
 
+    def map_url(self, q=None, zoom=1, maptype="satellite"):
+
+        url = "https://www.google.com/maps/embed/v1/"
+        if q:
+            return (url + "place" +
+                    "?key=" + self.GMAPS_EMBED_API_KEY +
+                    "&q=" + q +
+                    "&zoom=" + str(zoom) +
+                    "&maptype=" + maptype
+                    )
+        else:
+            return (url + "view" +
+                    "?key=" + self.GMAPS_EMBED_API_KEY +
+                    "&center=0,%200" +
+                    "&zoom=" + str(zoom) +
+                    "&maptype=" + maptype
+                    )
+
     def get_template_params(self, vessel_key):
         vessel = vessel_key.get()
         wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date)
         if wpt_qry.count(limit=1):
-            map_url = ("https://www.google.com/maps/embed/v1/place" +
-                       "?key=" + self.GMAPS_EMBED_API_KEY +
-                       "&q=" + str(wpt_qry.get().position) +
-                       "&zoom=5" +
-                       "&maptype=satellite"
-                       )
+            map_url = self.map_url(q=str(wpt_qry.get().position), zoom=5)
         else:
-            map_url = ("https://www.google.com/maps/embed/v1/view" +
-                       "?key=" + self.GMAPS_EMBED_API_KEY +
-                       "&center=0,%200" +
-                       "&zoom=1" +
-                       "&maptype=satellite"
-                       )
+            map_url = self.map_url()
 
         return {'loginurl': users.create_login_url('/'),
                 'vessel': vessel,
@@ -46,7 +54,7 @@ class MyVesselPage(VesselPage):
     NUM_WAYPOINTS = 10
 
     def get_template_params(self, vessel_key):
-        #call super class
+        #call for basic vessel parameters
         params = VesselPage.get_template_params(self, vessel_key)
         #add myvessel specific data
         params.update({'user': users.get_current_user(),
