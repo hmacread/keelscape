@@ -14,7 +14,7 @@ class PositionReport():
     def __init__(self, line_iterator):
     
         """Takes parses the iterator over enumerated sequence of line strings"""
-        
+        self.weather = None
         #Skip to AIRMAIL header
         for num, line in line_iterator:
             line = line.strip()
