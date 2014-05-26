@@ -4,15 +4,15 @@
 <head>
     {% block head %}
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <title>{% block title %}{% endblock %} - MMS</title>
+    <title>{% block title %}{% endblock %} - secret-bay</title>
     {% endblock %}
 </head>
 <body>
-    <div id="navbar">{% block navbar %}{% endblock %}</div>
+    <div id="navbar">{% block navbar %}<p>Want to get your own map? <a href='{{ loginurl }}'>Sign Up</a></p>{% endblock %}</div>
     <div id="content">{% block content %}{% endblock %}</div>
     <div id="footer">
         {% block footer %}
-        &copy; Copyright 2014 by <a href="http://macready.id.au/">Hugh Macready</a>.
+        <br>A new project by <a href="https://github.com/hmacread">Hugh Macready</a>.
         {% endblock %}
     </div>
 </body>

@@ -52,7 +52,7 @@ def validate_callsign(property, value):
 
 class Vessel(ndb.Model):
     
-    """Represents an MMS vessel"""
+    """Represents an secret-bay vessel"""
 
     name = ndb.StringProperty()
     email = ndb.StringProperty()

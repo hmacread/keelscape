@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Vessel List{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Vessels</h1>
+        <table>
+            <tr>
+                <th>Name</th>
+            </tr>
+        {% for vessel in vessels %}
+            <tr>
+                <td><a href='/vessel/key/{{ vessel.key.urlsafe() }}'>{{ vessel.name }}<a></td>
+            </tr>                   
+        {% endfor %}
+        </table>
+{% endblock %}

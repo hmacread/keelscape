@@ -3,9 +3,6 @@
 {% block head %}
     <p>{{ super() }}</p>
 {% endblock %}
-{% block navbar %}
-    <p>Want to create your own page? <a href='{{ loginurl }}'>Login</a></p>
-{% endblock %}
 {% block content %}
     <h1>Weather Observation</h1>
     <p>Position: {{ waypoint.human_readable_lat }} {{ waypoint.human_readable_lon }}</p>

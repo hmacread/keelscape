@@ -37,6 +37,9 @@ handlers:
   script: vessel.application
   login: required
 
+- url: /vessellist
+  script: vessellist.application
+
 - url: /vessel/key/.+
   script: vessel.application
 
