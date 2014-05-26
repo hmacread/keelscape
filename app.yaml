@@ -40,6 +40,9 @@ handlers:
 - url: /vessel/key/.+
   script: vessel.application
 
+- url: /weather/waypoint/.+
+  script: weather.application
+
 - url: /.*
   script: pagehandler.application
   

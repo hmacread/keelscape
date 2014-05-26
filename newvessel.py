@@ -23,7 +23,8 @@ class NewVesselPage(RequestHandler):
         template = JINJA_ENV.get_template('newvessel.html')
         params = {'user': users.get_current_user(),
                   'logouturl': users.create_logout_url('/'),
-                  'email': users.get_current_user().email()
+                  'email': users.get_current_user().email(),
+                  'countries': COUNTRIES,
                   }
         if extra_params:
             params.update(extra_params)

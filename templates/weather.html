@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Weather Observation{% endblock %}
+{% block head %}
+    <p>{{ super() }}</p>
+{% endblock %}
+{% block navbar %}
+    <p>Want to create your own page? <a href='{{ loginurl }}'>Login</a></p>
+{% endblock %}
+{% block content %}
+    <h1>Weather Observation</h1>
+    <p>Position: {{ waypoint.human_readable_lat }} {{ waypoint.human_readable_lon }}</p>
+    <p>Reported time: {{ waypoint.report_date }}</p   >
+    <h2>Details</h2>
+    <p>Wind Speed: {{ weather.wind_speed }}</p>
+    <p>Wind Direction: {{ weather.wind_direction }}</p>
+    <p>Wave Height: {{ weather.wind_waves_height }}</p>
+    <p>Wave Period: {{ weather.wind_waves_period }}</p>
+    <p>Swell Height: {{ weather.primary_swell_height }}</p>
+    <p>Swell Direction: {{ weather.primary_swell_direction }}</p>
+    <p>Swell Period: {{ weather.primary_swell_period }}</p>
+    <p>Barometric Pressure: {{ weather.barometric_pressure }}</p>
+    <p>3hr Trend Barometric Pressure: {{ weather.barometric_pressure_3hr_trend }}</p>
+    <p>Cloud Cover: {{ weather.cloud_cover_percent }}</p>
+    <p>Visibility: {{ weather.visibility }}</p>
+    <p>Air Temperature: {{ weather.air_temperature }}</p>
+    <p>Sea Temperature: {{ weather.sea_temperature }}</p>
+{% endblock %}

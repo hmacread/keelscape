@@ -5,7 +5,7 @@ from webapp2 import WSGIApplication, RequestHandler
 from datamodel import *
 from jinja_env import JINJA_ENV
 
-import secretdata
+import configdata
 
 class VesselPage(RequestHandler):
 
@@ -16,14 +16,14 @@ class VesselPage(RequestHandler):
         url = "https://www.google.com/maps/embed/v1/"
         if q:
             return (url + "place" +
-                    "?key=" + secretdata.GMAPS_EMBED_API_KEY +
+                    "?key=" + configdata.GMAPS_EMBED_API_KEY +
                     "&q=" + q +
                     "&zoom=" + str(zoom) +
                     "&maptype=" + maptype
                     )
         else:
             return (url + "view" +
-                    "?key=" + secretdata.GMAPS_EMBED_API_KEY +
+                    "?key=" + configdata.GMAPS_EMBED_API_KEY +
                     "&center=0,%200" +
                     "&zoom=" + str(zoom) +
                     "&maptype=" + maptype

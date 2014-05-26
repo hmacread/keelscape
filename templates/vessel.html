@@ -20,6 +20,7 @@
             <th>Speed</th>
             <th>Course</th>
             <th>Comment</th>
+            <th>Weather</th>
             <!--<th>Weather</th>-->
         </tr>
     {% block reportrow %}{% endblock %}
@@ -28,10 +29,11 @@
             <td>{{ wpt.human_readable_lat }}</td>
             <td>{{ wpt.human_readable_lon }}</td>
             <td>{{ wpt.report_date }}</td>
-            <td>{{ wpt.depth }}</td>
-            <td>{{ wpt.speed }}</td>
-            <td>{{ wpt.course }}</td>
-            <td>{{ wpt.comment | safe }}</td>
+            <td>{{ wpt.depth | default('') }}</td>
+            <td>{{ wpt.speed | default('') }} </td>
+            <td>{{ wpt.course | default('') }}</td>
+            <td>{{ wpt.comment | default('') | safe }}</td>
+            <td><a href="/weather/waypoint/{{ wpt.key.urlsafe() }}">weather</a></td>
         </tr>
     {% endfor %}
     </table>
