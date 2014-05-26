@@ -1,6 +1,7 @@
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #FFFFFF;
+  text-align: center;
 }
 
 table,th,td
@@ -13,8 +14,8 @@ border:1px solid black;
   background: url(../image/bg.jpg) 50% 0 no-repeat;
   padding-top: 280px;
   padding-bottom: 400px;
-  padding-right: 600px;
-  padding-left: 600px;
+  padding-right: 100px;
+  padding-left: 100px;
   
 }
 
