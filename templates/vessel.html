@@ -18,6 +18,7 @@
             <th>Course</th>
             <th>Comment</th>
             <th>Weather</th>
+            <th>Delete</th>
             <!--<th>Weather</th>-->
         </tr>
     {% block reportrow %}{% endblock %}
@@ -31,6 +32,8 @@
             <td>{{ wpt.course | default('') }}</td>
             <td>{{ wpt.comment | default('') | safe }}</td>
             <td><a href="/weather/waypoint/{{ wpt.key.urlsafe() }}">weather</a></td>
+            <td><form action="/waypoint/delete/{{ wpt.key.urlsafe() }}" method="post"><input type="submit" value="delete" name="delete"></form></td>
+
         </tr>
     {% endfor %}
     </table>

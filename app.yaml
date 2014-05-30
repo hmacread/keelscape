@@ -37,6 +37,13 @@ handlers:
   script: vessel.application
   login: required
 
+- url: /waypoint/delete/.+
+  script: waypoint.application
+  login: required
+
+- url: /waypoint
+  script: waypoint.application
+
 - url: /vessellist
   script: vessellist.application
 

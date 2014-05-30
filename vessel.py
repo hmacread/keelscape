@@ -75,6 +75,7 @@ class MyVesselPage(VesselPage):
             template = JINJA_ENV.get_template('myvessel.html')
             self.response.write(template.render(self.get_template_params(vessel_key)))
 
+
 application = WSGIApplication([('/myvessel', MyVesselPage),
                                ('/vessel/key/(.+)', VesselPage),
                                ])

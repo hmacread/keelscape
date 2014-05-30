@@ -104,6 +104,8 @@ class Waypoint(ndb.Model):
     def human_readable_lon(self):
         return Point.human_readable_lon(self.position.lon)
 
+    def delete(self):
+        self.key.delete()
 
 class Weather(ndb.Model):
     
