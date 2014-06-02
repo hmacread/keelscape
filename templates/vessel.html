@@ -12,12 +12,11 @@
         <tr>
             <th class="lat">Latitude</th>
             <th class="lon">Longitude</th>
-            <th>Date / Time</th>
-            <th>Depth</th>
-            <th>Speed</th>
-            <th>Course</th>
+            <th>Date / Time (UTC)</th>
+            <th>Depth (m)</th>
+            <th>Speed (kts)</th>
+            <th>Course (°T)</th>
             <th>Comment</th>
-            <th>Weather</th>
             <th>Actions</th>
             <!--<th>Weather</th>-->
         </tr>
@@ -31,7 +30,6 @@
             <td>{{ wpt.speed | default('') }} </td>
             <td>{{ wpt.course | default('') }}</td>
             <td>{{ wpt.comment | default('') | safe }}</td>
-            <td><a href="/weather/waypoint/{{ wpt.key.urlsafe() }}">weather</a></td>
             <td><form action="/waypoint/delete/{{ wpt.key.urlsafe() }}" method="post"><input type="submit" value="delete" name="delete"></form></td>
 
         </tr>
