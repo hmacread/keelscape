@@ -6,7 +6,7 @@ __author__ = 'hmacread'
 
 class WptDeleteRequest(RequestHandler):
 
-    def post(self, wpt_key_str):
+    def delete(self, wpt_key_str):
         wpt_key = ndb.Key(urlsafe=wpt_key_str)
         this_owner = Owner.get_key()
         #assumes that wpts are only children of vessels that are in turn children of owners

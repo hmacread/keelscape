@@ -27,15 +27,6 @@ class Point():
 
         return ndb.GeoPt(self.lat, self.lon)
 
-    # TODO proivide humar readable methods for Point
-    # def get_human_readable_lat(self):
-    #
-    #     return self.human_readable(self.lat)
-    #
-    # def get_human_readable_lon(self):
-    #
-    #     return self.human_readable(self.lon)
-
     @staticmethod
     def human_readable(degrees):
 
