@@ -17,7 +17,7 @@
             <th>Speed (kts)</th>
             <th>Course (°T)</th>
             <th>Comment</th>
-            <th>Actions</th>
+            {% block lastcolumn %}{% endblock %}
             <!--<th>Weather</th>-->
         </tr>
     {% block reportrow %}{% endblock %}
@@ -30,7 +30,7 @@
             <td>{{ wpt.speed | default('') }} </td>
             <td>{{ wpt.course | default('') }}</td>
             <td>{{ wpt.comment | default('') | safe }}</td>
-            <td><form action="/waypoint/delete/{{ wpt.key.urlsafe() }}" method="post"><input type="submit" value="delete" name="delete"></form></td>
+            {% if active_page == 'myvessel' %}<td><form action="/waypoint/delete/{{ wpt.key.urlsafe() }}" method="post"><input type="submit" value="delete" name="delete"></form></td>{% endif %}
 
         </tr>
     {% endfor %}

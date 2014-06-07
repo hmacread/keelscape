@@ -1,4 +1,5 @@
 {% extends "vessel.html" %}
+{% set active_page = "myvessel" %}
 {% block title %}{{ vessel.name }}{% endblock %}
 {% block head %}
     {{ super() }}
@@ -9,15 +10,16 @@
 {% block reportform %}
     <h2>Add a position: </h2>
 {% endblock %}
+{% block lastcolumn %}<th>Actions</th>{% endblock %}
 {% block reportrow %}
         <tr class="form">
             <form action="{{ submit_wpt_url }}" method="post">
-            <td class="latform"><input type="text" name="latdeg" maxlength="3" size="3">°<input type="text" name="latmin" size="6">min</td>
-            <td class="lonform"><input type="text" name="londeg" maxlength="3" size="3">°<input type="text" name="lonmin" size="6">min</td>
+            <td class="latform"><input type="text" name="latdeg" maxlength="3" size="3">°<input type="text" name="latmin" size="6"></td>
+            <td class="lonform"><input type="text" name="londeg" maxlength="3" size="3">°<input type="text" name="lonmin" size="6"></td>
             <td><input type="datetime" name="reporteddate" size="15"></td>
-            <td><input type="text" name="depth" size="1">m</td>
-            <td><input type="text" name="speed" maxlength="2" size="2">kts</td>
-            <td><input type="text" name="course" maxlength="3" size="3">°T</td>
+            <td><input type="text" name="depth" size="1"></td>
+            <td><input type="text" name="speed" maxlength="2" size="2"></td>
+            <td><input type="text" name="course" maxlength="3" size="3"></td>
             <td><textarea name="comment" rows="2" cols="40"></textarea></td>
             <td><input type="submit" name="report"></td>
             </form>
