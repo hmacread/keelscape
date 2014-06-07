@@ -7,6 +7,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 
 import datamodel
+from geocal.point import Point
 
 
 class WebPositionReport(webapp2.RequestHandler):
@@ -19,9 +20,10 @@ class WebPositionReport(webapp2.RequestHandler):
         val = self.request.POST
         wpt = datamodel.Waypoint(parent=ndb.Key(urlsafe=vessel_key))
         try:
-            lat = int(val['latdeg']) + float(val['latmin']) / 60
-            lon = int(val['londeg']) + float(val['lonmin']) / 60
-            wpt.position = ndb.GeoPt(lat,lon)
+            pt = Point()
+            pt.set_lat(val['latdeg'], val['latmin'])
+            pt.set_lon(val['londeg'], val['lonmin'])
+            wpt.position = pt.get_ndb_geopt()
             wpt.report_date = datetime.datetime.utcnow()
             if val['speed']:
                 wpt.speed = float(val['speed'])

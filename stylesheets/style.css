@@ -19,7 +19,7 @@ th {
 }
 
 th.lat, th.lon {
-    width: 120px;
+    width: 160px;
 }
 
 tr.form {
@@ -28,6 +28,9 @@ tr.form {
 
 td.latform, td.lonform {
     flex-wrap: nowrap;
+    letter-spacing: 0px;
+    word-spacing: 0px;
+    padding: 0px;
     /*TODO figure out no wrapping for lat/lon on form*/
 }
 
