@@ -29,9 +29,9 @@
             <td>{{ wpt.depth | default('') }}</td>
             <td>{{ wpt.speed | default('') }} </td>
             <td>{{ wpt.course | default('') }}</td>
-            <td>{{ wpt.comment | default('') | safe }}</td>
+            <td class="table_comment">{{ wpt.comment | default('') | safe }}</td>
+            {# TODO check behaviour of safe and check insert for no html.#}
             {% if active_page == 'myvessel' %}<td><form action="/waypoint/delete/{{ wpt.key.urlsafe() }}" method="post"><input type="submit" value="delete" name="delete"></form></td>{% endif %}
-
         </tr>
     {% endfor %}
     </table>

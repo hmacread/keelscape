@@ -34,6 +34,10 @@ td.latform, td.lonform {
     /*TODO figure out no wrapping for lat/lon on form*/
 }
 
+td.table_comment {
+    text-align: justify;
+}
+
 table,th,td {
   border:1px solid #1b2355;
   padding:5px;
