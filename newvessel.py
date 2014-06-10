@@ -67,12 +67,12 @@ class NewVesselPage(RequestHandler):
                 self.valid = False
 
     def add_flag(self):
-        if self.fd['flag']:
+        if self.fd.__contains__('flag'):
             try:
-                self.vessel.flag = string.capwords(self.fd['flag'])
-                assert 0 < len(self.vessel.flag) <= 100
+                self.vessel.flag = self.fd['flag']
+                assert not self.vessel.flag or COUNTRIES.__contains__(self.vessel.flag)
             except(ValueError, TypeError, BadValueError, AssertionError):
-                self.fd.update({'flag_err': "Your flag (home country) can be up to 100 letters."})
+                self.fd.update({'flag_err': "Please select a country of origin from the list."})
                 self.valid = False
 
     def add_draft(self):
