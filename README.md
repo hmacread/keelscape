@@ -14,3 +14,4 @@ In order to run the project locallyi:
 	_https://developers.google.com/maps/documentation/embed/guide#api_key_
 3. Edit configdata.py and change GMAPS_EMBED_API_KEY to be your newly created key.
 
+4. Run `python dev_appserver.py --host 127.0.0.1`
