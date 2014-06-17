@@ -2,7 +2,6 @@
 __author__ = 'hmacread'
 
 import math
-from google.appengine.ext import ndb
 
 class Point():
 
@@ -24,32 +23,35 @@ class Point():
 
     def set_lat(self, deg=0, min=0):
 
-        if not (-90 <= float(deg) <= 90):
-            raise InvalidPointError("%s degrees of latitude not between -90 and 90.")
-#        whole_deg, dec_min = math.modf(float(deg))
-#        if float(min) != 0 and dec_min != 0:
-#            raise InvalidPointError("Decimal degrees as well as minutes supplied.")
-        if not (0 <= abs(float(min)) < 60):
-            raise InvalidPointError("%s minutes of latitude not less than 60.")
-
+        self.check_coordinate(True, deg, min)
         self.lat = float(deg) + float(min) / 60
 
     def set_lon(self, deg=0, min=0):
 
-        if not (-180 <= float(deg) <= 180):
-            raise InvalidPointError("%s degrees of longitude not between -90 and 90.")
-
-#        whole_deg, dec_min = math.modf(float(deg))
-#        if min != 0 and dec_min != 0:
-#            raise InvalidPointError("Decimal degrees as well as minutes supplied.")
-        if not (0 <= abs(float(min)) < 60):
-            raise InvalidPointError("%s minutes of longitude not less than 60.")
-
+        self.check_coordinate(False, deg, min)
         self.lon = float(deg) + float(min) / 60
 
-    def get_ndb_geopt(self):
+    @staticmethod
+    def check_coordinate(type, deg=0, min=0):
 
-        return ndb.GeoPt(self.lat, self.lon)
+        """Checks that either a lat or lon is valid.
+
+        :param type: True if lattitude to be checked, false if longitude.
+        :param deg: Number of whole or decimal degrees to be checked.
+        :param min: Number of minutes in to be checked.  Only valid if deg is a whole number.
+        :raise InvalidPointError: Raised if given coordinate is invalid.
+        """
+        if type:
+            lim = 90
+        else:
+            lim = 180
+        if not (0 <= abs(float(deg)) <= lim):
+            raise InvalidPointError("%s degrees not between -%s and %s." % (deg, lim ,lim))
+        dec_min, whole_deg = math.modf(float(deg))
+        if float(min) != 0 and dec_min != 0:
+            raise InvalidPointError("Decimal degrees as well as minutes supplied.")
+        if not (0 <= abs(float(min)) < 60):
+            raise InvalidPointError("%s minutes not less than 60." % min)
 
     @staticmethod
     def human_readable(degrees):
@@ -76,9 +78,7 @@ class Point():
 class InvalidPointError(Exception):
 
     def __init__(self, msg):
-
         self.msg = msg
 
     def __str__(self):
-
         return ("Invalid Point: " + self.msg)
