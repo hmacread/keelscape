@@ -70,7 +70,7 @@ class NewVesselPage(RequestHandler):
         if self.fd.__contains__('flag'):
             try:
                 self.vessel.flag = self.fd['flag']
-                assert not self.vessel.flag or COUNTRIES.__contains__(self.vessel.flag)
+                assert not self.vessel.flag or self.vessel.flag in COUNTRIES
             except(ValueError, TypeError, BadValueError, AssertionError):
                 self.fd.update({'flag_err': "Please select a country of origin from the list."})
                 self.valid = False
