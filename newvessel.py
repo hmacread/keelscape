@@ -67,7 +67,7 @@ class NewVesselPage(RequestHandler):
                 self.valid = False
 
     def add_flag(self):
-        if self.fd.__contains__('flag'):
+        if 'flag' in self.fd:
             try:
                 self.vessel.flag = self.fd['flag']
                 assert not self.vessel.flag or self.vessel.flag in COUNTRIES
