@@ -41,6 +41,11 @@ class Point():
         :param min: Number of minutes in to be checked.  Only valid if deg is a whole number.
         :raise InvalidPointError: Raised if given coordinate is invalid.
         """
+        try:
+            deg = float(deg)
+            min = float(min)
+        except ValueError:
+            raise InvalidPointError("Invalid value given for degree and or minute.")
         if type:
             lim = 90
         else:

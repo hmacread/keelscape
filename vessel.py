@@ -59,21 +59,24 @@ class MyVesselPage(VesselPage):
         params = VesselPage.get_template_params(self, vessel_key)
         #add myvessel specific data
         params.update({'user': users.get_current_user(),
-                       'pulic_link': '/vessel/key/' + vessel_key.urlsafe(),
+                       'public_link': '/vessel/key/' + vessel_key.urlsafe(),
                        'submit_wpt_url': '/posreport/key/' + vessel_key.urlsafe(),
                        'logouturl': users.create_logout_url('/'),
                        })
         return params
 
     #Authentication enforced by app.yaml
-    def get(self):
+    def get(self, form_errs=None):
         if not Vessel.exists():
             #owner got here without creating a vessel somehow
             self.redirect('/newvessel')
         else:
             vessel_key = Vessel.get_key()
+            params = self.get_template_params(vessel_key)
+            if form_errs:
+                params['errors'] = form_errs
             template = JINJA_ENV.get_template('myvessel.html')
-            self.response.write(template.render(self.get_template_params(vessel_key)))
+            self.response.write(template.render(params))
 
 
 application = WSGIApplication([('/myvessel', MyVesselPage),
