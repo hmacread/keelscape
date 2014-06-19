@@ -25,9 +25,8 @@ handlers:
   login: admin
 
 - url: /posreport/.*
-  script: webpositionreport.application
+  script: vessel.application
   login: required
-  
 
 - url: /newvessel
   script: newvessel.application

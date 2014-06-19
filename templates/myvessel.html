@@ -14,20 +14,21 @@
 {% block reportrow %}
         <tr class="form">
             <form action="{{ submit_wpt_url }}" method="post">
-            <td class="latform">
-                <input type="text" name="latdeg" maxlength="2" size="2">°
-                <input type="text" name="latmin" size="6">
+
+            <td class="latform{% if 'lat' in errors %} error-bg{% endif %}">
+                <input type="text" name="latdeg" value="{{ latdeg }}" maxlength="2" size="2">°
+                <input type="text" name="latmin" value="{{ latmin }}"size="6">
                 <select name="dirlat">
-                    <option selected="selected" value="N">N</option>
-                    <option value="S">S</option>
+                    <option {% if dirlat == 'N' %}selected="selected"{% endif %} value="N">N</option>
+                    <option {% if dirlat == 'S' %}selected="selected"{% endif %} value="S">S</option>
                 </select>
             </td>
-            <td class="lonform">
-                <input type="text" name="londeg" maxlength="3" size="3">°
-                <input type="text" name="lonmin" size="6">
-                <select name="dirlat">
-                    <option selected="selected" value="E">E</option>
-                    <option value="W">W</option>
+            <td class="lonform{% if 'lon' in errors %} error-bg{% endif %}">
+                <input type="text" name="londeg" value="{{ londeg }}" maxlength="3" size="3">°
+                <input type="text" name="lonmin" value="{{ lonmin }}"size="6">
+                <select name="dirlon">
+                    <option {% if dirlon == 'E' %}selected="selected"{% endif %} value="E">E</option>
+                    <option {% if dirlon == 'W' %}selected="selected"{% endif %} value="W">W</option>
                 </select>
             </td>
             <td><input type="datetime" name="reporteddate" size="15"></td>

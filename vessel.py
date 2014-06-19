@@ -1,3 +1,5 @@
+import datetime
+
 __author__ = 'hmacread'
 
 from webapp2 import WSGIApplication, RequestHandler
@@ -5,13 +7,16 @@ from webapp2 import WSGIApplication, RequestHandler
 from datamodel import *
 from jinja_env import JINJA_ENV
 
+from geocal.point import Point, InvalidPointError
 import configdata
+
 
 class VesselPage(RequestHandler):
 
     NUM_WAYPOINTS = 5
 
-    def map_url(self, q=None, zoom=1, maptype="satellite"):
+    @staticmethod
+    def map_url(q=None, zoom=1, maptype="satellite"):
 
         url = "https://www.google.com/maps/embed/v1/"
         if q:
@@ -66,19 +71,67 @@ class MyVesselPage(VesselPage):
         return params
 
     #Authentication enforced by app.yaml
-    def get(self, form_errs=None):
+    def get(self, form_errs=None, form_content=None):
         if not Vessel.exists():
             #owner got here without creating a vessel somehow
             self.redirect('/newvessel')
         else:
             vessel_key = Vessel.get_key()
             params = self.get_template_params(vessel_key)
+            if form_content:
+                params.update(form_content)
             if form_errs:
                 params['errors'] = form_errs
             template = JINJA_ENV.get_template('myvessel.html')
             self.response.write(template.render(params))
 
+class WebPositionReport(MyVesselPage):
+
+    def __init__(self, request, response):
+        RequestHandler.initialize(self, request, response)
+        self.fd = self.request.POST
+        self.err = {}
+
+    def post(self, vessel_key):
+        #Note that login is required in app.yaml, but still check that user is not reporting for another vessel
+        user = Owner.get_key()
+        vessel = ndb.Key(urlsafe=vessel_key)
+        if not user == vessel.parent():
+            self.response.out.http_status_message(403)
+            return
+
+        self.wpt = Waypoint(parent=vessel)
+        self.add_coords()
+
+        self.wpt.report_date = datetime.datetime.utcnow()
+            # if self.fd['speed']:
+            #     wpt.speed = float(self.fd['speed'])
+            # if self.fd['course']:
+            #     wpt.heading = int(self.fd['course'])
+            # if self.fd['depth']:
+            #     wpt.depth = float(self.fd['depth'])
+            # if self.fd['comment']:
+            #     wpt.comment = self.fd['comment']
+        if not self.err:
+            self.wpt.put()
+            self.redirect('/myvessel')
+        else:
+            self.get(self.err, self.fd)
+
+    def add_coords(self):
+        pt = Point()
+        try:
+            pt.set_lat(self.fd['latdeg'], self.fd['latmin'])
+        except InvalidPointError as point_err:
+            self.err['lat'] = str(point_err)
+        try:
+            pt.set_lon(self.fd['londeg'], self.fd['lonmin'])
+        except InvalidPointError as point_err:
+            self.err['lon'] = str(point_err)
+        self.wpt.position = ndb.GeoPt(pt.lat, pt.lon)
+
 
 application = WSGIApplication([('/myvessel', MyVesselPage),
                                ('/vessel/key/(.+)', VesselPage),
+                               ('/posreport/key/(.+)', WebPositionReport),
                                ])
