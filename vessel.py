@@ -103,7 +103,6 @@ class WebPositionReport(MyVesselPage):
         if not user == vessel.parent():
             self.response.out.http_status_message(403)
             return
-
         self.wpt = Waypoint(parent=vessel)
         self.add_coords()
         self.add_date()
@@ -111,14 +110,6 @@ class WebPositionReport(MyVesselPage):
         self.add_speed()
         self.add_course()
         self.add_comment()
-            # if self.fd['speed']:
-            #     wpt.speed = float(self.fd['speed'])
-            # if self.fd['course']:
-            #     wpt.heading = int(self.fd['course'])
-            # if self.fd['depth']:
-            #     wpt.depth = float(self.fd['depth'])
-            # if self.fd['comment']:
-            #     wpt.comment = self.fd['comment']
         if not self.err:
             self.wpt.put()
             self.redirect('/myvessel')
