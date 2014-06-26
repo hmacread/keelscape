@@ -11,8 +11,8 @@ class Point():
 
         :param deglat: Degrees of lattitude provided as a string, float, or int.  If not a whole number then minlat bust be 0.
         :param deglon: Degrees of longitude provided as a string, float, or int.  If not a whole number then minlon bust be 0.
-        :param minlat: 0 if deglat is not whole number.  String, float or int minutes of latitude otherwise.
-        :param minlon: 0 if deglon is not whole number.  String, float or int minutes of longitude otherwise.
+        :param minlat: 0 if deglat is not whole number.  String, float or int minutes of latitude otherwise.  If deglat is non-zero then it's sign must match.
+        :param minlon: 0 if deglon is not whole number.  String, float or int minutes of longitude otherwise.  If deglon is non-zero then it's sign must match.
         """
         self.set_lat(deglat, minlat)
         self.set_lon(deglon, minlon)
@@ -21,15 +21,49 @@ class Point():
 
         return str(self.lat) + ',' + str(self.lon)
 
-    def set_lat(self, deg=0, min=0):
+    def set_lat(self, deg=0, min=0, dir=None):
+
+        """Validates the parameters and sets the longitude.
+
+        :param deg:  Degree as described in constructor.
+        :param min:  Minutes as described in constructor.
+        :param dir:  If provided overrides the sign of deg and min.  Valid strings 'N' & 'S'.
+        """
+        deg = float(deg)
+        min = float(min)
+        if dir:
+            if str(dir) == 'N':
+                pass
+            elif str(dir) == 'S':
+                deg *= -1
+                min *= -1
+            else:
+                raise InvalidPointError("Invalid direction provided, must be 'N' or 'S'")
 
         self.check_coordinate(True, deg, min)
         self.lat = float(deg) + float(min) / 60
 
-    def set_lon(self, deg=0, min=0):
+    def set_lon(self, deg=0, min=0, dir=None):
+
+        """Validates the parameters and sets the longitude.
+
+        :param deg:  Degree as described in constructor.
+        :param min:  Minutes as described in constructor.
+        :param dir:  If provided overrides the sign of deg and min. Valid strings 'N' & 'S'.
+        """
+        deg = float(deg)
+        min = float(min)
+        if dir:
+            if str(dir) == 'E':
+                pass
+            elif str(dir) == 'W':
+                deg *= -1
+                min *= -1
+            else:
+                raise InvalidPointError("Invalid direction provided, must be 'E' or 'W'")
 
         self.check_coordinate(False, deg, min)
-        self.lon = float(deg) + float(min) / 60
+        self.lon = deg + min / 60
 
     @staticmethod
     def check_coordinate(type, deg=0, min=0):
@@ -50,35 +84,46 @@ class Point():
             lim = 90
         else:
             lim = 180
-        if not (0 <= abs(float(deg)) <= lim):
-            raise InvalidPointError("%s degrees not between -%s and %s." % (deg, lim ,lim))
+        if not deg * min >= 0:
+            raise InvalidPointError("Minutes sign does not match degrees.")
         dec_min, whole_deg = math.modf(float(deg))
         if float(min) != 0 and dec_min != 0:
             raise InvalidPointError("Decimal degrees as well as minutes supplied.")
-        if not (0 <= abs(float(min)) < 60):
+        if not (0 <= abs(min) < 60):
             raise InvalidPointError("%s minutes not less than 60." % min)
+        if not (0 <= abs(deg) + abs(min) / 60 < lim):
+            raise InvalidPointError("%s degrees and %s min not between -%s and %s." % (deg, min, lim ,lim))
+
 
     @staticmethod
     def human_readable(degrees):
 
         """Takes a float and outputs a human readable deg / decimant minutes. Not Validated."""
-
         min, deg = math.modf(degrees)
         return str(int(deg)) + u'° ' + str(abs(min * 60)) + '\''
 
     @staticmethod
-    def human_readable_lat(degrees):
-        if degrees >= 0:
-            return Point.human_readable(abs(degrees)) + ' N'
+    def human_readable_lat(degree):
+        if degree >= 0:
+            return Point.human_readable(abs(degree)) + ' N'
         else:
-            return Point.human_readable(abs(degrees)) + ' S'
+            return Point.human_readable(abs(degree)) + ' S'
 
     @staticmethod
-    def human_readable_lon(degrees):
-        if degrees >= 0:
-            return Point.human_readable(abs(degrees)) + ' E'
+    def human_readable_lon(degree):
+        if degree >= 0:
+            return Point.human_readable(abs(degree)) + ' E'
         else:
-            return Point.human_readable(abs(degrees)) + ' W'
+            return Point.human_readable(abs(degree)) + ' W'
+
+    @property
+    def lat_str(self):
+        return self.human_readable_lat(self.lat)
+
+    @property
+    def lon_str(self):
+        return self.human_readable_lat(self.lon)
+
 
 class InvalidPointError(Exception):
 
@@ -87,3 +132,7 @@ class InvalidPointError(Exception):
 
     def __str__(self):
         return ("Invalid Point: " + self.msg)
+
+if __name__ == '__main__':
+    import tests.point_test
+    tests.point_test.main()

@@ -31,11 +31,11 @@
                     <option {% if dirlon == 'W' %}selected="selected"{% endif %} value="W">W</option>
                 </select>
             </td>
-            <td><input type="datetime" name="reporteddate" size="15"></td>
-            <td><input type="text" name="depth" size="1"></td>
-            <td><input type="text" name="speed" maxlength="2" size="2"></td>
-            <td><input type="text" name="course" maxlength="3" size="3"></td>
-            <td><textarea name="comment" rows="2" cols="40"></textarea></td>
+            <td {% if 'report_date' in errors %}class="error-bg"{% endif %}><input type="datetime" name="report_date" value="{{ report_date }}" size="18"></td>
+            <td {% if 'depth' in errors %}class="error-bg"{% endif %}><input type="text" name="depth" value="{{ depth }}" size="3"></td>
+            <td {% if 'speed' in errors %}class="error-bg"{% endif %}><input type="text" name="speed" value="{{ speed }}" maxlength="2" size="2"></td>
+            <td {% if 'course' in errors %}class="error-bg"{% endif %}><input type="text" name="course" value="{{ course }}" maxlength="3" size="3"></td>
+            <td {% if 'comment' in errors %}class="error-bg"{% endif %}><textarea name="comment" rows="2" cols="40"></textarea></td>
             <td><input type="submit" name="report"></td>
             </form>
         </tr>

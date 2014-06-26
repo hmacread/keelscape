@@ -89,7 +89,7 @@ class Waypoint(ndb.Model):
 
     position = ndb.GeoPtProperty(required=True)
     comment = ndb.TextProperty()
-    report_date = ndb.DateTimeProperty() 
+    report_date = ndb.DateTimeProperty()
     received_date = ndb.DateTimeProperty(required=True,auto_now_add=True)
     updated_date = ndb.DateTimeProperty(auto_now=True)
     course = ndb.StringProperty()

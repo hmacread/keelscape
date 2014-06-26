@@ -1,6 +1,6 @@
+from HTMLParser import HTMLParser
 import datetime
-
-__author__ = 'hmacread'
+from google.appengine.api.datastore_errors import BadValueError
 
 from webapp2 import WSGIApplication, RequestHandler
 
@@ -9,6 +9,9 @@ from jinja_env import JINJA_ENV
 
 from geocal.point import Point, InvalidPointError
 import configdata
+
+
+__author__ = 'hmacread'
 
 
 class VesselPage(RequestHandler):
@@ -78,6 +81,7 @@ class MyVesselPage(VesselPage):
         else:
             vessel_key = Vessel.get_key()
             params = self.get_template_params(vessel_key)
+            params['report_date'] = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M')
             if form_content:
                 params.update(form_content)
             if form_errs:
@@ -102,8 +106,11 @@ class WebPositionReport(MyVesselPage):
 
         self.wpt = Waypoint(parent=vessel)
         self.add_coords()
-
-        self.wpt.report_date = datetime.datetime.utcnow()
+        self.add_date()
+        self.add_depth()
+        self.add_speed()
+        self.add_course()
+        self.add_comment()
             # if self.fd['speed']:
             #     wpt.speed = float(self.fd['speed'])
             # if self.fd['course']:
@@ -116,20 +123,78 @@ class WebPositionReport(MyVesselPage):
             self.wpt.put()
             self.redirect('/myvessel')
         else:
-            self.get(self.err, self.fd)
+            self.get(self.err, self.request.POST)
 
     def add_coords(self):
         pt = Point()
         try:
-            pt.set_lat(self.fd['latdeg'], self.fd['latmin'])
-        except InvalidPointError as point_err:
+            if not self.fd['latmin']:
+                self.fd['latmin'] = 0
+            pt.set_lat(self.fd['latdeg'], self.fd['latmin'], self.fd['dirlat'])
+        except (InvalidPointError, ValueError) as point_err:
             self.err['lat'] = str(point_err)
         try:
-            pt.set_lon(self.fd['londeg'], self.fd['lonmin'])
-        except InvalidPointError as point_err:
+            if not self.fd['lonmin']:
+                self.fd['lonmin'] = 0
+            pt.set_lon(self.fd['londeg'], self.fd['lonmin'], self.fd['dirlon'])
+        except (InvalidPointError, ValueError) as point_err:
             self.err['lon'] = str(point_err)
         self.wpt.position = ndb.GeoPt(pt.lat, pt.lon)
 
+    def add_date(self):
+        try:
+            dt = datetime.datetime.strptime(self.fd['report_date'], '%Y-%m-%d %H:%M')
+            self.wpt.report_date = dt
+        except (ValueError, AssertionError) as error:
+            self.err['report_date'] = str(error)
+
+    def add_speed(self):
+        try:
+            if self.fd['speed']:
+                speed = float(self.fd['speed'])
+                assert 0.0 <= speed <= 50.0
+                self.wpt.speed = float(speed)
+        except (ValueError, TypeError, BadValueError, AssertionError):
+            self.err['speed'] = "You may enter a speed between 0.0 and 50.0 kts."
+
+    def add_course(self):
+        try:
+            if self.fd['course']:
+                course = int(self.fd['course'])
+                assert 0 <= course < 360
+                self.wpt.course = str(course)
+        except (ValueError, TypeError, BadValueError, AssertionError):
+            self.err['course'] = "You may enter a course between 0 and 359 degrees."
+
+
+    def add_depth(self):
+        try:
+            if self.fd['depth']:
+                depth = float(self.fd['depth'])
+                assert 0.0 <= depth <= 50000.0
+                self.wpt.depth = float(depth)
+        except (ValueError, TypeError, BadValueError, AssertionError):
+            self.err['depth'] = "You may enter a depth between 0.0 and 50000.0 m."
+
+    def add_comment(self):
+        try:
+            self.wpt.comment = strip_tags(self.fd['comment'])
+        except BadValueError:
+            self.err['comment'] = "Invalid comment."
+
+class MLStripper(HTMLParser):
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
 
 application = WSGIApplication([('/myvessel', MyVesselPage),
                                ('/vessel/key/(.+)', VesselPage),
