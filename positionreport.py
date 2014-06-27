@@ -140,7 +140,13 @@ class PositionReport():
         degrees, min_dir = data.split('-', 1)
         direction = min_dir[len(min_dir) - 1]
         minutes = min_dir.rstrip('NS')
-        idegrees, fminutes = int(degrees), float(minutes)
+        idegrees = int(degrees)
+        if '-' in minutes:
+            iminutes, iseconds = minutes.split('-', 1)
+            fminutes = float(iminutes) + float(iseconds) / 60
+        else:
+            fminutes = float(minutes)
+
         assert 0 <= fminutes < 60
         fdegrees = idegrees + fminutes / 60
         if direction == 'S':
