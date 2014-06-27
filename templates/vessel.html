@@ -2,11 +2,15 @@
 {% block title %}{{ vessel.name }}{% endblock %}
 {% block head %}
     {{ super() }}
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key={{ map.API_KEY }}">
+    </script>
 {% endblock %}
 {% block content %}
     <h1>{{ vessel.name }}</h1>
-    <iframe width="600" height="450" frameborder="0" style="border:0"
-        src="{{ map_url }}"></iframe>
+{#    <iframe width="600" height="450" frameborder="0" style="border:0"#}
+{#        src="{{ map_url }}"></iframe>#}
+    <div id="map-canvas"></div>
     <h2>Position Reports</h2>
     <table class="center">
         <tr>
@@ -43,4 +47,50 @@
     {% block privatedata %}{% endblock %}
     {% block editlink %}{% endblock %}
     {% block publicview %}{% endblock %}
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+      function initialize() {
+
+          var current_position = new google.maps.LatLng({{ map.vessel_location() }});
+          var mapOptions = {
+              center: new google.maps.LatLng({{ map.centre }}),
+              zoom: {{ map.zoom }},
+              mapTypeId: google.maps.MapTypeId.{{ map.type }}
+          };
+
+          var map = new google.maps.Map(document.getElementById("map-canvas"),
+                  mapOptions);
+
+          var wptCoords = [
+              {% for wpt in map.wpts %}new google.maps.LatLng({{ wpt.position.lat }}, {{ wpt.position.lon }}),{% endfor %}
+              current_position
+          ];
+
+          var previousPath = new google.maps.Polyline({
+              path: wptCoords,
+              geodesic: true,
+              strokeColor: '#FF0000',
+              strokeOpacity: 1.0,
+              strokeWeight: 2
+          });
+
+          previousPath.setMap(map);
+
+          var marker = new google.maps.Marker({
+            position: current_position,
+            map: map,
+            title: "{{ map.last_report() }}"
+          });
+
+      }
+      function loadScript() {
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&' +
+                'callback=initialize';
+          document.body.appendChild(script);
+      }
+      window.onload = loadScript;
+    </script>
 {% endblock %}

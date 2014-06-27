@@ -76,3 +76,10 @@ table,th,td {
 #errortext {
     color: #c01b15;
 }
+
+#map-canvas {
+    width: 800px;
+    height: 450px;
+    margin: 0 auto;
+
+}

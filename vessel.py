@@ -9,6 +9,7 @@ from jinja_env import JINJA_ENV
 
 from geocal.point import Point, InvalidPointError
 import configdata
+from mapping import GoogleMapTrack
 
 
 __author__ = 'hmacread'
@@ -18,37 +19,39 @@ class VesselPage(RequestHandler):
 
     NUM_WAYPOINTS = 5
 
-    @staticmethod
-    def map_url(q=None, zoom=1, maptype="satellite"):
-
-        url = "https://www.google.com/maps/embed/v1/"
-        if q:
-            return (url + "place" +
-                    "?key=" + configdata.GMAPS_EMBED_API_KEY +
-                    "&q=" + q +
-                    "&zoom=" + str(zoom) +
-                    "&maptype=" + maptype
-                    )
-        else:
-            return (url + "view" +
-                    "?key=" + configdata.GMAPS_EMBED_API_KEY +
-                    "&center=0,%200" +
-                    "&zoom=" + str(zoom) +
-                    "&maptype=" + maptype
-                    )
+    # @staticmethod
+    # def map_url(q=None, zoom=1, maptype="satellite"):
+    #
+    #     url = "https://www.google.com/maps/embed/v1/"
+    #     if q:
+    #         return (url + "place" +
+    #                 "?key=" + configdata.GMAPS_EMBED_API_KEY +
+    #                 "&q=" + q +
+    #                 "&zoom=" + str(zoom) +
+    #                 "&maptype=" + maptype
+    #                 )
+    #     else:
+    #         return (url + "view" +
+    #                 "?key=" + configdata.GMAPS_EMBED_API_KEY +
+    #                 "&center=0,%200" +
+    #                 "&zoom=" + str(zoom) +
+    #                 "&maptype=" + maptype
+    #                 )
 
     def get_template_params(self, vessel_key):
         vessel = vessel_key.get()
         wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date)
         if wpt_qry.count(limit=1):
-            map_url = self.map_url(q=str(wpt_qry.get().position), zoom=5)
+            pass
+            # map_url = self.map_url(q=str(wpt_qry.get().position), zoom=5)
         else:
-            map_url = self.map_url()
+            pass
+            # map_url = self.map_url()
 
         return {'loginurl': users.create_login_url('/'),
                 'vessel': vessel,
                 'waypoints': wpt_qry.fetch(self.NUM_WAYPOINTS),
-                'map_url': map_url
+                'map' : GoogleMapTrack(vessel)
                 }
 
     def get(self, vessel_key_str):
