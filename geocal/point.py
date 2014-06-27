@@ -100,7 +100,7 @@ class Point():
 
         """Takes a float and outputs a human readable deg / decimant minutes. Not Validated."""
         min, deg = math.modf(degrees)
-        return str(int(deg)) + u'° ' + str(abs(min * 60)) + '\''
+        return str(int(deg)) + u'° ' + str(abs(round(min * 60, 3))) + '\''
 
     @staticmethod
     def human_readable_lat(degree):

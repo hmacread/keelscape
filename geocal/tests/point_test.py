@@ -43,7 +43,17 @@ class Tests():
         passed = True
         x = Point()
         x.set_lat(12.1)
-        if not x.lat_str == u'12° 6.0\' N': passed = False
+        if not x.lat_str == u'12° 6.0\' N':
+            passed = False
+        x.set_lat(12, 32.666666666666666)
+        if not x.lat_str == u'12° 32.667\' N':
+            passed = False
+        x.set_lon(12.1)
+        if not x.lon_str == u'12° 6.0\' N':
+            passed = False
+        x.set_lon(12, 32.666666666666666)
+        if not x.lon_str == u'12° 32.667\' N':
+            passed = False
         return passed
 
     @staticmethod
@@ -53,13 +63,8 @@ class Tests():
         try:
             x.set_lat(89.99999999)
             if not x.lat == 89.99999999: passed = False
-
-
-
-
         except InvalidPointError:
             passed = False
-
         return passed
 
     @staticmethod
@@ -89,19 +94,26 @@ class Tests():
         passed = True
         x = Point()       
         x.set_lat(10, 15, 'N')
-        if x.lat != 10.25: passed = False
+        if x.lat != 10.25:
+            passed = False
         x.set_lat(10, 15, 'S')
-        if x.lat != -10.25: passed = False
+        if x.lat != -10.25:
+            passed = False
         x.set_lat(0, 0, 'S')
-        if x.lat != 0: passed = False
+        if x.lat != 0:
+            passed = False
         x.set_lat(0, 15, 'S')
-        if x.lat != -0.25: passed = False
+        if x.lat != -0.25:
+            passed = False
         x.set_lon(92, 15, 'W')
-        if x.lon != -92.25: passed = False
+        if x.lon != -92.25:
+            passed = False
         x.set_lon(92, 15, 'E')
-        if x.lon != 92.25: passed = False
+        if x.lon != 92.25:
+            passed = False
         x.set_lon(0, 0, 'W')
-        if x.lon != 0: passed = False
+        if x.lon != 0:
+            passed = False
         try:
             x.set_lat(1, 2, '-1')
             passed = False
