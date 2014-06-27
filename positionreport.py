@@ -50,7 +50,7 @@ class PositionReport():
             if line.strip() == SAILMAIL_FOOTER_DIV:
                 break
             #skip lines without semi-colon or data
-            if not (seperator and data):
+            if not (seperator and data.strip()):
                 continue
             try:
                 self.write_yotrep_field(type.strip(), data.strip())
