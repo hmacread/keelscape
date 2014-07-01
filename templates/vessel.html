@@ -61,23 +61,24 @@
           var map = new google.maps.Map(document.getElementById("map-canvas"),
                   mapOptions);
 
-          {% if map.wpts %}
+          {% if map.vessel_location() %}
           current_position = new google.maps.LatLng({{ map.vessel_location() }});
-          var wptCoords = [
-              {% for wpt in map.wpts %}new google.maps.LatLng({{ wpt.position.lat }}, {{ wpt.position.lon }}),{% endfor %}
-              current_position
-          ];
+              {% if map.wpts %}
+              var wptCoords = [
+                  {% for wpt in map.wpts %}new google.maps.LatLng({{ wpt.position.lat }}, {{ wpt.position.lon }}),{% endfor %}
+                  current_position
+              ];
 
-          var previousPath = new google.maps.Polyline({
-              path: wptCoords,
-              geodesic: true,
-              strokeColor: '#FF0000',
-              strokeOpacity: 1.0,
-              strokeWeight: 2
-          });
+              var previousPath = new google.maps.Polyline({
+                  path: wptCoords,
+                  geodesic: true,
+                  strokeColor: '#FF0000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 2
+              });
 
-          previousPath.setMap(map);
-
+              previousPath.setMap(map);
+              {% endif %}
 
           var marker = new google.maps.Marker({
             position: current_position,
