@@ -13,42 +13,62 @@
 <div id="vesselform">
     <form action="/newvessel" method="post">
 
-        <h3>Name: *</h3>
-        <p><input type="text" name="name" value="{{ name }}"><span id="errortext">{{ name_err }}</span><br>
-        i.e. Seadancer</p>
-
-        <h3>Email Address: *</h3>
-        <p><input type="text" name="email" value="{{ email }}"><span id="errortext">{{ email_err }}</span><br>
-        i.e. svseadancer@yahoo.com</p>
-    
-        <h3>Flag:</h3>
-{#        <p><input type="text" name="flag" value="{{ flag }}"><span id="errortext">{{ flag_err }}</span><br>#}
-{#        i.e. USA, France ..</p>#}
-
-
-        <select name="flag">
-            <option {% if not flag is defined %}selected="selected"{% endif %} disabled="disabled">Please select a country</option>
-            {%  for country in countries %}
-            <option {% if flag == country %}selected="selected"{% endif %} value="{{ country }}">{{ country }}</option>
-            {% endfor %}
-        </select>
-
-        <h3>Home Port:</h3>
-        <p><input type="text" name="home_port" value="{{ home_port }}"><span id="errortext">{{ home_port_err }}</span><br>
-        i.e. Redondo Beach, Montepellier ..</p>
-
-        <h3>Length Over All (in meters)</h3>
-        <p><input type="text" name="loa" value="{{ loa }}"><span id="errortext">{{ loa_err }}</span><br>
-        i.e. 13.3 for a (44ft vessel)</p>
-
-        <h3>Draft (in meters)</h3>
-        <p><input type="text" name="draft" value="{{ draft }}"><span id="errortext">{{ draft_err }}</span><br>
-        i.e. 2.0 for a (6"5' draft)</p>
-    
-        <h3>Callsign:</h3>
-        <p><input type="text" name="callsign" value="{{ callsign }}"><span id="errortext">{{ callsign_err }}</span><br>
-        I.e. XYZ1234, ABCXYZ<br>
-        Note: Must exactly match HF callsign used in YOTREPS style reports for this vessel.</p>
+        <table class="center">
+            <tr>
+                <td><h3>Name: *</h3></td>
+                <td><input type="text" name="name" value="{{ name }}"><br>
+                    i.e. Seadancer<br>
+                    <span id="errortext">{{ name_err }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><h3>Email Address: *</h3></td>
+                <td><input type="text" name="email" value="{{ email }}"><br>
+                    i.e. svseadancer@yahoo.com<br>
+                    <span id="errortext">{{ email_err }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><h3>Flag:</h3></td>
+                <td>
+                    <select name="flag">
+                        <option {% if not flag is defined %}selected="selected"{% endif %} disabled="disabled">Please select a country</option>
+                        {%  for country in countries %}
+                        <option {% if flag == country %}selected="selected"{% endif %} value="{{ country }}">{{ country }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><h3>Home Port:</h3></td>
+                <td><input type="text" name="home_port" value="{{ home_port }}"><br>
+                    i.e. Redondo Beach, Montepellier ..<br>
+                    <span id="errortext">{{ home_port_err }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><h3>Length Over All (in meters)</h3></td>
+                <td><input type="text" name="loa" value="{{ loa }}"><br>
+                    i.e. 13.3 for a (44ft vessel)<br>
+                    <span id="errortext">{{ loa_err }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><h3>Draft (in meters)</h3></td>
+                <td><input type="text" name="draft" value="{{ draft }}"><br>
+                    i.e. 2.0 for a (6"5' draft)<br>
+                    <span id="errortext">{{ draft_err }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><h3>Callsign:</h3></td>
+                <td><input type="text" name="callsign" value="{{ callsign }}"><br>
+                    I.e. XYZ1234, ABCXYZ<br>
+                    Note: Must exactly match HF callsign used in YOTREPS style reports for this vessel.<br>
+                    <span id="errortext">{{ callsign_err }}</span>
+                </td>
+            </tr>
+        </table>
     
 <p><input type="submit"></p>
     </form>

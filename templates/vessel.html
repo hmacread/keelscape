@@ -52,7 +52,6 @@
     <script type="text/javascript">
       function initialize() {
 
-          var current_position = new google.maps.LatLng({{ map.vessel_location() }});
           var mapOptions = {
               center: new google.maps.LatLng({{ map.centre }}),
               zoom: {{ map.zoom }},
@@ -62,6 +61,8 @@
           var map = new google.maps.Map(document.getElementById("map-canvas"),
                   mapOptions);
 
+          {% if map.wpts %}
+          current_position = new google.maps.LatLng({{ map.vessel_location() }});
           var wptCoords = [
               {% for wpt in map.wpts %}new google.maps.LatLng({{ wpt.position.lat }}, {{ wpt.position.lon }}),{% endfor %}
               current_position
@@ -77,11 +78,13 @@
 
           previousPath.setMap(map);
 
+
           var marker = new google.maps.Marker({
             position: current_position,
             map: map,
             title: "{{ map.last_report() }}"
           });
+          {% endif %}
 
       }
       function loadScript() {
