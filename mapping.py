@@ -15,7 +15,7 @@ class GoogleMap(Map):
 
     DEFAULT_ZOOM = 8
     API_KEY = GOOGLE_API_KEY
-
+    WORLD_ZOOM = 2
 
     def __init__(self):
         self.centre = Point()
@@ -44,11 +44,22 @@ class GoogleMapTrack(GoogleMap):
     def __init__(self, vessel):
         GoogleMap.__init__(self)
         self.wpts = datamodel.Waypoint.query(ancestor=vessel.key).order(datamodel.Waypoint.report_date).fetch(500)
-        self.current_wpt = self.wpts.pop()
-        self.centre = self.current_wpt.position
+        if self.wpts:
+            self.current_wpt = self.wpts.pop()
+            self.centre = self.current_wpt.position
+        else:
+            self.current_wpt = None
+            self.zoom = self.WORLD_ZOOM
+            self.centre = ndb.GeoPt(0,0)
 
     def vessel_location(self):
-        return self.current_wpt.position
+        if self.current_wpt:
+            return self.current_wpt.position
+        else:
+            return None
 
     def last_report(self):
-        return str(self.current_wpt.report_date)
+        if self.current_wpt:
+            return str(self.current_wpt.report_date)
+        else:
+            return None
