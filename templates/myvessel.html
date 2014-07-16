@@ -36,7 +36,7 @@
             <td {% if 'speed' in errors %}class="error-bg"{% endif %}><input type="text" name="speed" value="{{ speed }}" maxlength="2" size="2"></td>
             <td {% if 'course' in errors %}class="error-bg"{% endif %}><input type="text" name="course" value="{{ course }}" maxlength="3" size="3"></td>
             <td {% if 'comment' in errors %}class="error-bg"{% endif %}><textarea name="comment" rows="2" cols="40"></textarea></td>
-            <td><input type="submit" name="report"></td>
+            <td><input type="submit" name="report" value="Submit"></td>
             </form>
         </tr>
 {% endblock %}

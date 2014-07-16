@@ -7,6 +7,7 @@
     <title>{% block title %}{% endblock %} | Keelscape</title>
     {% endblock %}
 </head>
+{% block body %}
 <body>
     <div id="navbar">{% block navbar %}<p>Want to get your own map? <a href='{{ loginurl }}'>Sign Up</a></p>{% endblock %}</div>
     <div id="content">{% block content %}{% endblock %}</div>
@@ -17,3 +18,4 @@
     </div>
 {% block script %}{% endblock %}
 </body>
+{% endblock %}
