@@ -1,6 +1,7 @@
 from HTMLParser import HTMLParser
 import datetime
 from google.appengine.api.datastore_errors import BadValueError
+from google.appengine.datastore.datastore_query import Cursor
 
 from webapp2 import WSGIApplication, RequestHandler
 
@@ -11,25 +12,46 @@ from geocal.point import Point, InvalidPointError
 import configdata
 from mapping import GoogleMapTrack
 
-
 __author__ = 'hmacread'
-
 
 class VesselPage(RequestHandler):
 
     NUM_WAYPOINTS = 5
 
     def get_template_params(self, vessel_key):
+        self.vessel_key = vessel_key
         vessel = vessel_key.get()
-        wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date, -Waypoint.received_date)
 
-        return {'loginurl': users.create_login_url('/'),
+        wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date, -Waypoint.received_date)
+        curs = Cursor(urlsafe=self.request.get('cursor'))
+        params = {'loginurl': users.create_login_url('/'),
                 'vessel': vessel,
-                'waypoints': wpt_qry.fetch(self.NUM_WAYPOINTS),
                 'map' : GoogleMapTrack(vessel)
                 }
+        if self.request.get('cursor'):
+            params['start_url'] = self.get_base_url()
+        else:
+            params['start_url'] = ''
+        params['waypoints'], next_curs, params['older'] = wpt_qry.fetch_page(self.NUM_WAYPOINTS, start_cursor=curs)
+        if params['older'] and next_curs:
+            params['next_page_url'] = self.get_base_url() + "?cursor=" + next_curs.urlsafe()
+        else:
+            params['older'] = False
 
-            #{% if more %}<a href="{{ forward_url }}">Next</a>{% endif %}
+        # #Formulate reverse pointer if there is more recent waypoints
+        # rev_wpt_qry = Waypoint.query(ancestor=vessel.key).order(Waypoint.report_date, Waypoint.received_date)
+        # rev_curs = curs.reversed()
+        # _, prev_curs, params['newer'] = wpt_qry.fetch_page(self.NUM_WAYPOINTS, start_cursor=rev_curs)
+        # if params['newer'] and prev_curs:
+        #      params['prev_page_url'] = self.get_base_url() + "?cursor=" + prev_curs.reversed().urlsafe()
+        # else:
+        #      params['newer'] = False
+
+
+        return params
+
+    def get_base_url(self):
+        return "/vessel/key/" + self.vessel_key.urlsafe()
 
     def get(self, vessel_key_str):
         template = JINJA_ENV.get_template('vessel.html')
@@ -68,6 +90,9 @@ class MyVesselPage(VesselPage):
                 params['errors'] = form_errs
             template = JINJA_ENV.get_template('myvessel.html')
             self.response.write(template.render(params))
+
+    def get_base_url(self):
+        return '/myvessel'
 
 class WebPositionReport(MyVesselPage):
 

@@ -39,7 +39,10 @@
         </tr>
     {% endfor %}
     </table>
-
+    <p>
+        {% if start_url %}<a href="{{ start_url }}">Back to start</a>  ...{% endif %}
+        {% if older %}<a href="{{ next_page_url }}">Older</a>{% endif %}
+    </p>
     <h2>Vessel Particulars</h2>
     <p><b>Name:</b> {{ vessel.name }}</p>
     <p><b>Length:</b> {{ vessel.loa }}</p>
