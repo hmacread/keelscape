@@ -117,6 +117,40 @@ class Point():
             return Point.human_readable(abs(degree)) + ' W'
 
     @property
+    def dirlat(self):
+        if self.lat >= 0:
+            return 'N'
+        else:
+            return 'S'
+
+    @property
+    def dirlon(self):
+        if self.lon >= 0:
+            return 'E'
+        else:
+            return 'W'
+
+    @property
+    def latdeg(self):
+        _, deg = math.modf(self.lat)
+        return abs(int(deg))
+
+    @property
+    def latmin(self):
+        min, _ = math.modf(self.lat)
+        return abs(min * 60)
+
+    @property
+    def londeg(self):
+        _, deg = math.modf(self.lon)
+        return abs(int(deg))
+
+    @property
+    def lonmin(self):
+        min, _ = math.modf(self.lon)
+        return abs(min * 60)
+
+    @property
     def lat_str(self):
         return self.human_readable_lat(self.lat)
 

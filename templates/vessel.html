@@ -26,17 +26,19 @@
         </tr>
     {% block reportrow %}{% endblock %}
     {% for wpt in waypoints %}
-        </tr>    
-            <td>{{ wpt.human_readable_lat }}</td>
-            <td>{{ wpt.human_readable_lon }}</td>
-            <td>{{ wpt.report_date.strftime('%d %b %Y %H:%M') }}</td>
-            <td>{{ wpt.depth | default('') }}</td>
-            <td>{{ wpt.speed | default('') }} </td>
-            <td>{{ wpt.course | default('') }}</td>
-            <td class="table_comment">{{ wpt.comment | default('') | safe }}</td>
-            {# TODO check behaviour of safe and check insert for no html.#}
-            {% if active_page == 'myvessel' %}<td><form action="/waypoint/delete/{{ wpt.key.urlsafe() }}" method="post"><input type="submit" value="delete" name="delete"></form></td>{% endif %}
-        </tr>
+
+            <tr>
+                <td>{{ wpt.human_readable_lat }}</td>
+                <td>{{ wpt.human_readable_lon }}</td>
+                <td><a href="/waypoint/{{ wpt.key.urlsafe() }}">{{ wpt.report_date.strftime('%d %b %Y %H:%M') }}</a></td>
+                <td>{{ wpt.depth | default('') }}</td>
+                <td>{{ wpt.speed | default('') }} </td>
+                <td>{{ wpt.course | default('') }}</td>
+                <td class="table_comment">{{ wpt.comment | default('') | safe }}</td>
+                <td>{% if active_page == 'myvessel' %}<a href="/waypoint/delete/{{ wpt.key.urlsafe() }}
+                {% if cursor %}?cursor={{ cursor }}{% endif %}"><div class="inside_button">Delete</div></a>{% endif %}</td>
+            </tr>
+
     {% endfor %}
     </table>
     <p>

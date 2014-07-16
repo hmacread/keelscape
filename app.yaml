@@ -40,7 +40,11 @@ handlers:
   script: waypoint.application
   login: required
 
-- url: /waypoint
+- url: /waypoint/edit/.+
+  script: waypoint.application
+  login: required
+
+- url: /waypoint/.+
   script: waypoint.application
 
 - url: /vessellist

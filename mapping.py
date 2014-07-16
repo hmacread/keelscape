@@ -22,7 +22,14 @@ class GoogleMap(Map):
         self.zoom = self.DEFAULT_ZOOM
         self.type = "HYBRID"
 
+class GoogleMapWpt(GoogleMap):
 
+    def __init__(self, waypoint):
+        GoogleMap.__init__(self)
+        self.centre = waypoint.position
+
+    def wpt_position(self):
+        return self.centre
 
 class GoogleMapCurrentLocation(GoogleMap):
 
