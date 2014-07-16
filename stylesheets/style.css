@@ -88,7 +88,8 @@ table,th,td {
 }
 
 #splash p {
-    color: silver;
+    color: rgba(227, 233, 233, 0.93);
+    text-shadow: -1px 1px 1px #FFFFFF;
     line-height: 40px;
     font-size: large;
 }
