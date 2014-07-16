@@ -82,7 +82,7 @@ table,th,td {
     color: #FFFFFF;
     text-decoration: none;
 }
-#splash table,th,td,tr {
+#splash table, #splash th, #splash td, #splash tr {
   border:5px transparent;
   padding:20px;
 }
@@ -123,7 +123,7 @@ input[type=submit] {
     cursor: auto;
 }
 input[type=submit]:hover {
-    background: #1b2375;
+    background: #1b23A5;
 }
 
 
