@@ -19,4 +19,18 @@ indexes:
   ancestor: yes
   properties:
   - name: report_date
+  - name: received_date
+
+- kind: Waypoint
+  ancestor: yes
+  properties:
+  - name: report_date
+    direction: desc
+
+- kind: Waypoint
+  ancestor: yes
+  properties:
+  - name: report_date
+    direction: desc
+  - name: received_date
     direction: desc

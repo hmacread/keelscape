@@ -30,7 +30,9 @@ class GoogleMapCurrentLocation(GoogleMap):
 
     def __init__(self, vessel):
         GoogleMap.__init__(self)
-        self.current_wpt = datamodel.Waypoint.query(ancestor=vessel.key).order(-datamodel.Waypoint.report_date).get()
+        self.current_wpt = datamodel.Waypoint.query(ancestor=vessel.key).order(-datamodel.Waypoint.report_date,
+                                                                               -datamodel.Waypoint.received_date
+                                                                              ).get()
         self.centre = self.current_wpt.position
 
     def vessel_location(self):
@@ -43,7 +45,9 @@ class GoogleMapTrack(GoogleMap):
 
     def __init__(self, vessel):
         GoogleMap.__init__(self)
-        self.wpts = datamodel.Waypoint.query(ancestor=vessel.key).order(datamodel.Waypoint.report_date).fetch(500)
+        self.wpts = datamodel.Waypoint.query(ancestor=vessel.key).order(datamodel.Waypoint.report_date,
+                                                                        datamodel.Waypoint.received_date
+                                                                        ).fetch(self.MAX_WPTS)
         if self.wpts:
             self.current_wpt = self.wpts.pop()
             self.centre = self.current_wpt.position

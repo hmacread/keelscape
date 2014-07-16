@@ -19,40 +19,17 @@ class VesselPage(RequestHandler):
 
     NUM_WAYPOINTS = 5
 
-    # @staticmethod
-    # def map_url(q=None, zoom=1, maptype="satellite"):
-    #
-    #     url = "https://www.google.com/maps/embed/v1/"
-    #     if q:
-    #         return (url + "place" +
-    #                 "?key=" + configdata.GMAPS_EMBED_API_KEY +
-    #                 "&q=" + q +
-    #                 "&zoom=" + str(zoom) +
-    #                 "&maptype=" + maptype
-    #                 )
-    #     else:
-    #         return (url + "view" +
-    #                 "?key=" + configdata.GMAPS_EMBED_API_KEY +
-    #                 "&center=0,%200" +
-    #                 "&zoom=" + str(zoom) +
-    #                 "&maptype=" + maptype
-    #                 )
-
     def get_template_params(self, vessel_key):
         vessel = vessel_key.get()
-        wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date)
-        if wpt_qry.count(limit=1):
-            pass
-            # map_url = self.map_url(q=str(wpt_qry.get().position), zoom=5)
-        else:
-            pass
-            # map_url = self.map_url()
+        wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date, -Waypoint.received_date)
 
         return {'loginurl': users.create_login_url('/'),
                 'vessel': vessel,
                 'waypoints': wpt_qry.fetch(self.NUM_WAYPOINTS),
                 'map' : GoogleMapTrack(vessel)
                 }
+
+            #{% if more %}<a href="{{ forward_url }}">Next</a>{% endif %}
 
     def get(self, vessel_key_str):
         template = JINJA_ENV.get_template('vessel.html')
