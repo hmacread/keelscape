@@ -12,6 +12,10 @@
 {#        src="{{ map_url }}"></iframe>#}
     <div id="map-canvas"></div>
     <h2>Position Reports</h2>
+    <p>
+        {% if start_url %}<a href="{{ start_url }}">Back to start</a>  ...{% endif %}
+        {% if older %}<a href="{{ next_page_url }}">Older</a>{% endif %}
+    </p>
     <table class="center">
         <tr>
             <th class="lat">Latitude</th>
