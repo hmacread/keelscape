@@ -7,6 +7,7 @@ __author__ = 'hmacread'
 class WptDeleteRequest(RequestHandler):
 
     def post(self, wpt_key_str):
+        print self.request.POST
         wpt_key = ndb.Key(urlsafe=wpt_key_str)
         this_owner = Owner.get_key()
         #assumes that wpts are only children of vessels that are in turn children of owners
@@ -14,7 +15,7 @@ class WptDeleteRequest(RequestHandler):
 
         if this_owner == wpt_owner:
             wpt_key.delete()
-            self.redirect('/myvessel')
+            self.redirect(self.request.POST['redirect_url'])
         else:
             self.response.out.http_status_message(403)
 

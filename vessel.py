@@ -33,6 +33,7 @@ class VesselPage(RequestHandler):
         else:
             params['start_url'] = ''
         params['waypoints'], next_curs, params['older'] = wpt_qry.fetch_page(self.NUM_WAYPOINTS, start_cursor=curs)
+        params['this_page_url'] = self.get_base_url() + "?cursor=" + curs.urlsafe()
         if params['older'] and next_curs:
             params['next_page_url'] = self.get_base_url() + "?cursor=" + next_curs.urlsafe()
         else:

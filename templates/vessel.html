@@ -35,7 +35,12 @@
             <td>{{ wpt.course | default('') }}</td>
             <td class="table_comment">{{ wpt.comment | default('') | safe }}</td>
             {# TODO check behaviour of safe and check insert for no html.#}
-            {% if active_page == 'myvessel' %}<td><form action="/waypoint/delete/{{ wpt.key.urlsafe() }}" method="post"><input type="submit" value="delete" name="delete"></form></td>{% endif %}
+            {% if active_page == 'myvessel' %}
+            <td>
+                <form action="/waypoint/delete/{{ wpt.key.urlsafe() }}" method="post">
+                    <input type="submit" value="Delete" name="delete"><input type="hidden" name="redirect_url" value="{{ this_page_url }}">
+                </form>
+            </td>{% endif %}
         </tr>
     {% endfor %}
     </table>
