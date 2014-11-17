@@ -30,7 +30,6 @@ class VesselPage(RequestHandler):
                 }
         if self.request.get('cursor'):
             params['start_url'] = self.get_base_url()
-            params['cursor'] = self.request.get('cursor')
         else:
             params['start_url'] = ''
         params['waypoints'], next_curs, params['older'] = wpt_qry.fetch_page(self.NUM_WAYPOINTS, start_cursor=curs)
@@ -110,20 +109,17 @@ class WebPositionReport(MyVesselPage):
             self.response.out.http_status_message(403)
             return
         self.wpt = Waypoint(parent=vessel)
-        self.add_all()
-        if not self.err:
-            self.wpt.put()
-            self.redirect('/myvessel')
-        else:
-            self.get(self.err, self.request.POST)
-
-    def add_all(self):
         self.add_coords()
         self.add_date()
         self.add_depth()
         self.add_speed()
         self.add_course()
         self.add_comment()
+        if not self.err:
+            self.wpt.put()
+            self.redirect('/myvessel')
+        else:
+            self.get(self.err, self.request.POST)
 
     def add_coords(self):
         pt = Point()
@@ -182,7 +178,6 @@ class WebPositionReport(MyVesselPage):
         except BadValueError:
             self.err['comment'] = "Invalid comment."
 
-
 class MLStripper(HTMLParser):
     def __init__(self):
         self.reset()
@@ -200,5 +195,4 @@ def strip_tags(html):
 application = WSGIApplication([('/myvessel', MyVesselPage),
                                ('/vessel/key/(.+)', VesselPage),
                                ('/posreport/key/(.+)', WebPositionReport),
-
                                ])

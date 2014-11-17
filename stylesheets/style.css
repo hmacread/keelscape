@@ -9,18 +9,6 @@ table.center {
   margin-right:auto;
 }
 
-#waypoint td, #waypoint tr, #waypoint table {
-    border: none;
-    text-align: left;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-#waypoint td.col-l {
-    text-align: right;
-}
-
 table {
     border-collapse: collapse;
 }
@@ -41,9 +29,9 @@ th.lat, th.lon {
     width: 160px;
 }
 
-/*tr.form {*/
-    /*font-size: small;*/
-/*}*/
+tr.form {
+    font-size: small;
+}
 
 td.latform, td.lonform {
     flex-wrap: nowrap;
@@ -123,9 +111,9 @@ table,th,td {
     background-color: silver;
 }
 
-input[type=submit], .inside_button {
-    background-color: #ffffff;
-    color: #1b2355;
+input[type=submit] {
+    background-color: #1b2355;
+    color: #ffffff;
     border: 1px solid #000;
     padding: 5px 15px 6px;
     -webkit-border-radius: 10px;
@@ -134,26 +122,11 @@ input[type=submit], .inside_button {
     -o-border-radius: 10px;
     border-radius: 10px;
     cursor: auto;
-    text-decoration: none;
-    width: auto;
-    margin-left: auto;
-    margin-right: auto;
+}
+input[type=submit]:hover {
+    background: #1b23A5;
 }
 
-.inside_button {
-
-}
-
-#waypoint input[type=submit], #waypoint .inside_button {
-    font-size: large;
-}
-
-input[type=submit]:hover, .inside_button:hover {
-    /*background: #1b23A5;*/
-    background-color: #1b2355;
-    color: #ffffff;
-
-}
 
 #splash a:visited {
     color: #FFFFFF;
