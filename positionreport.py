@@ -66,8 +66,12 @@ class PositionReport():
               MARINE : YES must precede weather.  
         """
         
+<<<<<<< HEAD
+        if type == 'IDENT':
+=======
         if type == 'IDENT':  
-            qry = Vessel.query(Vessel.callsign == data)
+>>>>>>> cc69d320ca0ee8c38f35b49d1d5d1744beab38ab
+            qry = Vessel.query(Vessel.callsign == data.upper())
             vessel_key = qry.get(keys_only=True)
             if not vessel_key:
                 raise VesselNotFoundError(data)
