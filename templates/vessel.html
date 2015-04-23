@@ -11,17 +11,6 @@
 {#    <iframe width="600" height="450" frameborder="0" style="border:0"#}
 {#        src="{{ map_url }}"></iframe>#}
     <div id="map-canvas"></div>
-    <h3>Found this service helpful?</h3>
-    <p>Buy the Keelscape crew a beer!</p>
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-        <input type="hidden" name="cmd" value="_s-xclick">
-        <input type="hidden" name="hosted_button_id" value="NSBPBPP5B5AQ4">
-        <input type="image" src="https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal — The safer, easier way to pay online.">
-        <img alt="" border="0" src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif" width="1" height="1">
-    </form>
-
-
-
     <h2>Position Reports</h2>
     <p>
         {% if start_url %}<a href="{{ start_url }}">Back to start</a>  ...{% endif %}
@@ -69,6 +58,14 @@
     <p><b>Draft:</b> {{ vessel.draft }}</p>
     {% block privatedata %}{% endblock %}
     {% block editlink %}{% endblock %}
+    <h3>Found this service helpful?</h3>
+    <p>Buy the Keelscape crew a beer!</p>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="NSBPBPP5B5AQ4">
+        <input type="image" src="https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal — The safer, easier way to pay online.">
+        <img alt="" border="0" src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif" width="1" height="1">
+    </form>
     {% block publicview %}{% endblock %}
 {% endblock %}
 {% block script %}
