@@ -21,7 +21,7 @@ class PositionReport():
             if not line.find('AIRMAIL') == -1:
                 break
         else:
-            raise PositionReportError(0,"<Empty body>")
+            raise PositionReportError(0,"No AIRMAIL header found in message body.")
 
         if 'YOTREPS' in line:
             self.parse_yotrep(line_iterator)
