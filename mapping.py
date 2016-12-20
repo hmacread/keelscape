@@ -41,7 +41,7 @@ class GoogleMapCurrentLocation(GoogleMap):
 class GoogleMapTrack(GoogleMap):
 
     DEFAULT_ZOOM = 4
-    MAX_WPTS = 1000
+    MAX_WPTS = 1500
 
     def __init__(self, vessel):
         GoogleMap.__init__(self)
