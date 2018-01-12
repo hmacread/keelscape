@@ -49,9 +49,12 @@ class PositionReport():
             #skip all lines after sailmail footer divider
             if line.strip() == SAILMAIL_FOOTER_DIV:
                 break
-            #skip lines without semi-colon or data
+            #if line has no data type, assume it is rest of comment
             if not (seperator and data.strip()):
-                continue
+                if (line.strip()):
+                    self.waypoint.comment += line
+                #if no text then skip line
+		continue
             try:
                 self.write_yotrep_field(type.strip(), data.strip())
             except (AssertionError, TypeError, ValueError):
