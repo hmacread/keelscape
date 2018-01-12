@@ -52,7 +52,7 @@ class PositionReport():
             #if line has no data type, assume it is rest of comment
             if not (seperator and data.strip()):
                 if (line.strip()):
-                    self.waypoint.comment += line
+                    self.waypoint.comment += ' ' + line
                 #if no text then skip line
 		continue
             try:
