@@ -2,9 +2,6 @@
 {% block title %}{{ vessel.name }}{% endblock %}
 {% block head %}
     {{ super() }}
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key={{ map.API_KEY }}">
-    </script>
 {% endblock %}
 {% block content %}
     <h1>{{ vessel.name }}</h1>
@@ -103,9 +100,9 @@
       function loadScript() {
           var script = document.createElement('script');
           script.type = 'text/javascript';
-          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&' +
-            + 'key={{ map.API_KEY }}'
-            + 'callback=initialize';
+          script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp'
+            + '&key={{ map.API_KEY }}'
+            + '&callback=initialize';
           document.body.appendChild(script);
       }
       window.onload = loadScript;
