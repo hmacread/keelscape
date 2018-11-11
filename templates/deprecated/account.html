@@ -1,3 +1,17 @@
+<!-- Copyright 2018 Hugh Macready
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 {% extends "base.html" %}
 {% block title %}Account{% endblock %}
 {% block head %}
@@ -17,17 +31,17 @@
 <form action="/vessel" method="post">
 
     <h3>Name: *</h3>
-    <p>i.e. Seadancer</p>    
+    <p>i.e. Seadancer</p>
     <p><input type="text" name="name" value="{{ vessel.name }}"></p>
 
     <h3>Home Port:</h3>
     <p>i.e. Redondo Beach, FL</p>
     <p><input type="text" name="home_port" value="{{ vessel.home_port }}"></p>
-    
+
     <h3>Flag:</h3>
     <p>i.e. USA, Australia, etc</p>
     <p><input type="text" name="flag" value="{{ vessel.flag }}"></p>
-           
+
     <h3>Length Over All (in meters)</h3>
     <p>i.e. 13.3 for a (44ft vessel)</p>
     <p><input type="text" name="length_over_all" value="{{ vessel.length_over_all }}"></p>
@@ -35,19 +49,19 @@
     <h3>Draft (in meters)</h3>
     <p>i.e. 2.0 for a (6"5' draft)</p>
     <p><input type="text" name="draft" value="{{ vessel.draft }}"></p>
-    
+
     <h3>Callsign:</h3>
     <p>Must exactly match HF callsign used for YOTREPS style reports.</p>
     <p><input type="text" name="callsign" value="{{ vessel.callsign }}"></p>
-    
+
     <h3>MMSI</h3>
     <p>i.e. 512123456.</p>
     <p><input type="text" name="mmsi" value="{{ vessel.mmsi }}"></p>
-    
+
     <h3>On Board Email Address:</h3>
     <p>i.e. XYZ1234@sailmail.com or ABCXYZ@winlink.org.  Note: We will never distribute email to this address, it is used to verify received position reports.</p>
     <p><input type="text" name="onboard_email_address" value="{{ vessel.onboard_email_address }}"></p>
-        
+
 </form>
 
 <p><input type="submit"></p>
