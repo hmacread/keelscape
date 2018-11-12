@@ -2,7 +2,7 @@
 
 http://www.keelscape.com
 
-A web application designed to facilitate sharing of waypoints, tracks, route maps within the world cruising community and their freinds and family.
+A web application designed to facilitate sharing of waypoints, tracks, route maps within the sailing community, their freinds and family.
 
 ## Developer Setup
 
