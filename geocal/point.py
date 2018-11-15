@@ -1,3 +1,4 @@
+# coding=utf-8
 """ Copyright 2018 Hugh Macready
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-# coding=utf-8
 __author__ = 'hmacread'
 
 import math
