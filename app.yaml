@@ -20,7 +20,7 @@ libraries:
 
 - name: webapp2
   version: latest
-  
+
 - name: jinja2
   version: latest
 
@@ -31,7 +31,7 @@ handlers:
 
 - url: /image
   static_dir: image
-  
+
 - url: /_ah/mail/.+
   script: emailhandler.application
   login: admin
@@ -43,10 +43,13 @@ handlers:
 - url: /newvessel
   script: newvessel.application
   login: required
-  
+
 - url: /myvessel
   script: vessel.application
   login: required
+
+- url: /download.csv
+  script: downloadcsv.application
 
 - url: /waypoint/delete/.+
   script: waypoint.application
@@ -66,7 +69,7 @@ handlers:
 
 - url: /.*
   script: pagehandler.application
-  
+
 inbound_services:
 
 - mail
