@@ -41,7 +41,6 @@ class DownloadCsv(webapp2.RequestHandler):
             csv += str(waypoint.updated_date) + ","
             csv += str(waypoint.course) + ","
             csv += str(waypoint.speed) + ","
-            csv += str(waypoint.depth) + ","
             csv += str(waypoint.depth) + "\n"
 
         self.response.write(csv)
