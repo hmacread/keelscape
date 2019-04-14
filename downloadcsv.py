@@ -24,7 +24,7 @@ from jinja_env import JINJA_ENV
 
 class DownloadCsv(webapp2.RequestHandler):
 
-    MAX_WAYPOINTS = 50
+    MAX_WAYPOINTS = 10000
 
     def get(self):
 
