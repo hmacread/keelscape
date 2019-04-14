@@ -35,7 +35,7 @@ class DownloadCsv(webapp2.RequestHandler):
         for waypoint in waypoints:
             csv += str(waypoint.position.lat) + ","
             csv += str(waypoint.position.lat) + ","
-            csv += str(waypoint.comment) + ","
+            csv += "\"" + str(waypoint.comment) + "\","
             csv += str(waypoint.report_date) + ","
             csv += str(waypoint.received_date) + ","
             csv += str(waypoint.updated_date) + ","
