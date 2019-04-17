@@ -15,7 +15,8 @@ limitations under the License.
 
 from google.appengine.api import users
 from datamodel import Vessel,Waypoint,Weather
-
+import csv
+import StringIO
 
 __author__ = 'hmacread'
 
@@ -31,18 +32,22 @@ class DownloadCsv(webapp2.RequestHandler):
         vessel = Vessel.get_key().get()
         wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date, -Waypoint.received_date)
         waypoints = wpt_qry.fetch(self.MAX_WAYPOINTS)
-        csv = "latitude,longitude,comment,report_date,recived_date,update_date,course,speed,depth\n"
+        csv_str = StringIO.StringIO()
+        fieldnames = ['latitude','longitude','comment','report_date',
+                      'recived_date','update_date','course','speed','depth']
+        writer = csv.DictWriter(csv_str, fieldnames, dialect='excel')
+        writer.writeheader()
         for waypoint in waypoints:
-            csv += str(waypoint.position.lat) + ","
-            csv += str(waypoint.position.lat) + ","
-            csv += "\"" + str(waypoint.comment) + "\","
-            csv += str(waypoint.report_date) + ","
-            csv += str(waypoint.received_date) + ","
-            csv += str(waypoint.updated_date) + ","
-            csv += str(waypoint.course) + ","
-            csv += str(waypoint.speed) + ","
-            csv += str(waypoint.depth) + "\n"
-
-        self.response.write(csv)
+            writer.writerow({'latitude' : str(waypoint.position.lat),
+                             'longitude' : str(waypoint.position.lon),
+                             'comment' : waypoint.comment.encode(encoding="utf-8", errors="replace"),
+                             'report_date' : str(waypoint.report_date),
+                             'recived_date' : str(waypoint.received_date),
+                             'update_date' : str(waypoint.updated_date),
+                             'course' : str(waypoint.course),
+                             'speed' : str(waypoint.speed),
+                             'depth' : str(waypoint.depth)
+                             })
+        self.response.write(csv_str.getvalue())
 
 application = webapp2.WSGIApplication([('/download.csv', DownloadCsv),])
