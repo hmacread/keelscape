@@ -38,16 +38,18 @@ class DownloadCsv(webapp2.RequestHandler):
         writer = csv.DictWriter(csv_str, fieldnames, dialect='excel')
         writer.writeheader()
         for waypoint in waypoints:
-            writer.writerow({'latitude' : str(waypoint.position.lat),
-                             'longitude' : str(waypoint.position.lon),
-                             'comment' : waypoint.comment.encode(encoding="utf-8", errors="replace"),
-                             'report_date' : str(waypoint.report_date),
-                             'recived_date' : str(waypoint.received_date),
-                             'update_date' : str(waypoint.updated_date),
-                             'course' : str(waypoint.course),
-                             'speed' : str(waypoint.speed),
-                             'depth' : str(waypoint.depth)
-                             })
+            rowDict = {'latitude' : str(waypoint.position.lat),
+                'longitude' : str(waypoint.position.lon),
+                'report_date' : str(waypoint.report_date),
+                'recived_date' : str(waypoint.received_date),
+                'update_date' : str(waypoint.updated_date),
+                'course' : str(waypoint.course),
+                'speed' : str(waypoint.speed),
+                'depth' : str(waypoint.depth)
+                }
+            if waypoint.comment:
+                rowDict['comment'] = waypoint.comment.encode(encoding="utf-8", errors="ignore")
+            writer.writerow(rowDict)
         self.response.write(csv_str.getvalue())
 
 application = webapp2.WSGIApplication([('/download.csv', DownloadCsv),])
