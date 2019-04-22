@@ -49,7 +49,12 @@ handlers:
   login: required
 
 - url: /download.csv
-  script: downloadcsv.application
+  script: download.application
+  login: required
+
+- url: /download.gpx
+  script: download.application
+  login: required
 
 - url: /waypoint/delete/.+
   script: waypoint.application

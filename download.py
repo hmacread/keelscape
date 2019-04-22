@@ -17,31 +17,31 @@ from google.appengine.api import users
 from datamodel import Vessel,Waypoint,Weather
 import csv
 import StringIO
+from gpxpy.gpx import GPX, GPXWaypoint
 
 __author__ = 'hmacread'
 
 import webapp2
 from jinja_env import JINJA_ENV
 
+MAX_WAYPOINTS = 10000
+
 class DownloadCsv(webapp2.RequestHandler):
 
-    MAX_WAYPOINTS = 10000
-
     def get(self):
-
         vessel = Vessel.get_key().get()
         wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date, -Waypoint.received_date)
-        waypoints = wpt_qry.fetch(self.MAX_WAYPOINTS)
+        waypoints = wpt_qry.fetch(MAX_WAYPOINTS)
         csv_str = StringIO.StringIO()
         fieldnames = ['latitude','longitude','comment','report_date',
-                      'recived_date','update_date','course','speed','depth']
+                      'received_date','update_date','course','speed','depth']
         writer = csv.DictWriter(csv_str, fieldnames, dialect='excel')
         writer.writeheader()
         for waypoint in waypoints:
             rowDict = {'latitude' : str(waypoint.position.lat),
                 'longitude' : str(waypoint.position.lon),
                 'report_date' : str(waypoint.report_date),
-                'recived_date' : str(waypoint.received_date),
+                'received_date' : str(waypoint.received_date),
                 'update_date' : str(waypoint.updated_date),
                 'course' : str(waypoint.course),
                 'speed' : str(waypoint.speed),
@@ -52,4 +52,21 @@ class DownloadCsv(webapp2.RequestHandler):
             writer.writerow(rowDict)
         self.response.write(csv_str.getvalue())
 
-application = webapp2.WSGIApplication([('/download.csv', DownloadCsv),])
+class DownloadGpx(webapp2.RequestHandler):
+
+    def get(self):
+        vessel = Vessel.get_key().get()
+        wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date, -Waypoint.received_date)
+        waypoints = wpt_qry.fetch(MAX_WAYPOINTS)
+        gpx = GPX()
+        for waypoint in waypoints:
+            wpt = GPXWaypoint(waypoint.position.lat, waypoint.position.lon)
+            wpt.time = waypoint.received_date
+            if waypoint.comment:
+                wpt.description = waypoint.comment.encode(encoding="utf-8", errors="ignore")
+            gpx.waypoints.append(wpt)
+        self.response.write(gpx.to_xml())
+
+application = webapp2.WSGIApplication([('/download.csv', DownloadCsv),
+                                        ('/download.gpx', DownloadGpx),
+                                        ])
