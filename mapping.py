@@ -16,6 +16,7 @@ limitations under the License.
 from google.appengine.ext import ndb
 from geocal.point import Point
 import datamodel
+import configdata
 
 __author__ = 'hmacread'
 
@@ -56,13 +57,12 @@ class GoogleMapCurrentLocation(GoogleMap):
 class GoogleMapTrack(GoogleMap):
 
     DEFAULT_ZOOM = 4
-    MAX_WPTS = 1500
 
     def __init__(self, vessel):
         GoogleMap.__init__(self)
         self.wpts = datamodel.Waypoint.query(ancestor=vessel.key).order(datamodel.Waypoint.report_date,
                                                                         datamodel.Waypoint.received_date
-                                                                        ).fetch(self.MAX_WPTS)
+                                                                        ).fetch(configdata.MAX_WAYPOINTS)
         if self.wpts:
             self.current_wpt = self.wpts.pop()
             self.centre = self.current_wpt.position

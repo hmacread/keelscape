@@ -18,20 +18,19 @@ from datamodel import Vessel,Waypoint,Weather
 import csv
 import StringIO
 from gpxpy.gpx import GPX, GPXWaypoint
+import configdata
 
 __author__ = 'hmacread'
 
 import webapp2
 from jinja_env import JINJA_ENV
 
-MAX_WAYPOINTS = 10000
-
 class DownloadCsv(webapp2.RequestHandler):
 
     def get(self):
         vessel = Vessel.get_key().get()
         wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date, -Waypoint.received_date)
-        waypoints = wpt_qry.fetch(MAX_WAYPOINTS)
+        waypoints = wpt_qry.fetch(configdata.MAX_WAYPOINTS)
         csv_str = StringIO.StringIO()
         fieldnames = ['latitude','longitude','comment','report_date',
                       'received_date','update_date','course','speed','depth']
@@ -57,7 +56,7 @@ class DownloadGpx(webapp2.RequestHandler):
     def get(self):
         vessel = Vessel.get_key().get()
         wpt_qry = Waypoint.query(ancestor=vessel.key).order(-Waypoint.report_date, -Waypoint.received_date)
-        waypoints = wpt_qry.fetch(MAX_WAYPOINTS)
+        waypoints = wpt_qry.fetch(configdata.MAX_WAYPOINTS)
         gpx = GPX()
         for waypoint in waypoints:
             wpt = GPXWaypoint(waypoint.position.lat, waypoint.position.lon)
